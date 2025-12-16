@@ -1,0 +1,895 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Academics - Ishwar International School</title>
+    <meta name="description" content="Explore our comprehensive academic programs from Pre-primary to Senior Secondary. Discover our CBSE curriculum, co-curricular activities, and educational excellence.">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Animation Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.4.3/echarts.min.js"></script>
+    
+    <style>
+        :root {
+            --forest-green: #2D5A3D;
+            --warm-cream: #F8F6F0;
+            --charcoal-gray: #3A3A3A;
+            --soft-gold: #D4AF37;
+            --muted-blue: #5B7C99;
+            --light-sage: #A8B5A0;
+            --coral-pink: #E07A5F;
+            --warm-white: #FEFEFE;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--warm-cream);
+            color: var(--charcoal-gray);
+        }
+        
+        .font-display {
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .hero-bg {
+            background: linear-gradient(135deg, var(--forest-green) 0%, var(--muted-blue) 100%);
+        }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(45, 90, 61, 0.15);
+        }
+        
+        .btn-primary {
+            background: var(--forest-green);
+            color: var(--warm-white);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            background: var(--muted-blue);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(45, 90, 61, 0.3);
+        }
+        
+        .reveal-element {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        
+        .filter-btn {
+            transition: all 0.3s ease;
+            border: 2px solid var(--light-sage);
+            color: var(--charcoal-gray);
+        }
+        
+        .filter-btn.active {
+            background: var(--forest-green);
+            color: var(--warm-white);
+            border-color: var(--forest-green);
+        }
+        
+        .filter-btn:hover {
+            background: var(--light-sage);
+            color: var(--warm-white);
+        }
+        
+        .program-card {
+            transition: all 0.3s ease;
+            cursor: pointer;
+        }
+        
+        .program-card:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 12px 30px rgba(45, 90, 61, 0.15);
+        }
+        
+        .program-card.hidden {
+            display: none;
+        }
+        
+        .floating-shapes {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        
+        .shape {
+            position: absolute;
+            opacity: 0.1;
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+        
+        .progress-bar {
+            height: 8px;
+            background: var(--light-sage);
+            border-radius: 4px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: var(--forest-green);
+            border-radius: 4px;
+            transition: width 1s ease-out;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full bg-white/95 backdrop-blur-sm z-50 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <div class="font-display text-2xl font-bold text-forest-green">
+                        Ishwar International
+                    </div>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="index.html" class="text-charcoal-gray hover:text-forest-green transition-colors">Home</a>
+                    <a href="about.html" class="text-charcoal-gray hover:text-forest-green transition-colors">About</a>
+                    <a href="academics.html" class="text-forest-green font-medium border-b-2 border-coral-pink">Academics</a>
+                    <a href="contact.html" class="text-charcoal-gray hover:text-forest-green transition-colors">Contact</a>
+                </div>
+                <button class="btn-primary px-6 py-2 rounded-full font-medium">
+                    Admission Enquiry
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="relative pt-20 pb-16 hero-bg overflow-hidden">
+        <div class="floating-shapes">
+            <div class="shape w-16 h-16 bg-soft-gold rounded-full top-20 left-10"></div>
+            <div class="shape w-12 h-12 bg-light-sage rounded-full top-40 right-20"></div>
+            <div class="shape w-20 h-20 bg-coral-pink rounded-full bottom-32 left-1/4"></div>
+        </div>
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center text-warm-white">
+                <h1 class="font-display text-5xl lg:text-6xl font-bold mb-6 reveal-element">
+                    Academic Excellence
+                </h1>
+                <p class="text-xl lg:text-2xl opacity-90 max-w-3xl mx-auto reveal-element">
+                    Comprehensive educational programs designed for holistic development and academic success
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Curriculum Overview -->
+    <section class="py-20 bg-warm-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="font-display text-4xl lg:text-5xl font-bold text-forest-green mb-6 reveal-element">
+                    CBSE Curriculum Framework
+                </h2>
+                <p class="text-xl text-charcoal-gray max-w-3xl mx-auto reveal-element">
+                    Following the Central Board of Secondary Education curriculum with innovative teaching methodologies
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+                <div class="reveal-element">
+                    <div class="bg-warm-cream rounded-2xl p-8 h-full">
+                        <div class="text-4xl mb-6">📚</div>
+                        <h3 class="font-display text-2xl font-bold text-forest-green mb-4">Academic Rigor</h3>
+                        <p class="text-charcoal-gray leading-relaxed mb-6">
+                            Our curriculum emphasizes conceptual understanding, critical thinking, and practical application of knowledge.
+                        </p>
+                        <ul class="text-sm text-charcoal-gray space-y-2">
+                            <li>• Concept-based learning approach</li>
+                            <li>• Regular assessments and feedback</li>
+                            <li>• Individual attention to students</li>
+                            <li>• Remedial and enrichment programs</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="reveal-element">
+                    <div class="bg-warm-cream rounded-2xl p-8 h-full">
+                        <div class="text-4xl mb-6">🧠</div>
+                        <h3 class="font-display text-2xl font-bold text-forest-green mb-4">Learning Methodology</h3>
+                        <p class="text-charcoal-gray leading-relaxed mb-6">
+                            Multi-dimensional and experimental learning system that goes beyond traditional classroom teaching.
+                        </p>
+                        <ul class="text-sm text-charcoal-gray space-y-2">
+                            <li>• Interactive classroom sessions</li>
+                            <li>• Project-based learning</li>
+                            <li>• Collaborative group activities</li>
+                            <li>• Technology integration</li>
+                        </ul>
+                    </div>
+                </div>
+                
+                <div class="reveal-element">
+                    <div class="bg-warm-cream rounded-2xl p-8 h-full">
+                        <div class="text-4xl mb-6">📊</div>
+                        <h3 class="font-display text-2xl font-bold text-forest-green mb-4">Assessment Approach</h3>
+                        <p class="text-charcoal-gray leading-relaxed mb-6">
+                            Comprehensive evaluation system that assesses both academic performance and skill development.
+                        </p>
+                        <ul class="text-sm text-charcoal-gray space-y-2">
+                            <li>• Continuous and comprehensive evaluation</li>
+                            <li>• Formative and summative assessments</li>
+                            <li>• Skill-based evaluation</li>
+                            <li>• Regular parent-teacher meetings</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Interactive Program Explorer -->
+    <section class="py-20 bg-warm-cream">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="font-display text-4xl lg:text-5xl font-bold text-forest-green mb-6 reveal-element">
+                    Program Explorer
+                </h2>
+                <p class="text-xl text-charcoal-gray max-w-3xl mx-auto reveal-element">
+                    Discover our comprehensive academic programs across all grade levels
+                </p>
+            </div>
+            
+            <!-- Filter Buttons -->
+            <div class="flex flex-wrap justify-center gap-4 mb-12 reveal-element">
+                <button class="filter-btn active px-6 py-3 rounded-full font-semibold" data-filter="all">
+                    All Programs
+                </button>
+                <button class="filter-btn px-6 py-3 rounded-full font-semibold" data-filter="pre-primary">
+                    Pre-Primary
+                </button>
+                <button class="filter-btn px-6 py-3 rounded-full font-semibold" data-filter="primary">
+                    Primary
+                </button>
+                <button class="filter-btn px-6 py-3 rounded-full font-semibold" data-filter="secondary">
+                    Secondary
+                </button>
+                <button class="filter-btn px-6 py-3 rounded-full font-semibold" data-filter="senior-secondary">
+                    Senior Secondary
+                </button>
+            </div>
+            
+            <!-- Program Cards -->
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8" id="program-grid">
+                <!-- Pre-Primary Programs -->
+                <div class="program-card bg-warm-white rounded-2xl p-8 reveal-element" data-category="pre-primary">
+                    <div class="text-4xl mb-6">🎨</div>
+                    <h3 class="font-display text-2xl font-bold text-forest-green mb-4">Nursery & KG</h3>
+                    <p class="text-charcoal-gray leading-relaxed mb-6">
+                        Play-based learning approach focusing on cognitive, social, and motor skill development.
+                    </p>
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm font-medium">Age Group</span>
+                            <span class="text-sm text-muted-blue">3-5 years</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm font-medium">Class Size</span>
+                            <span class="text-sm text-muted-blue">25 students</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm font-medium">Teacher Ratio</span>
+                            <span class="text-sm text-muted-blue">1:15</span>
+                        </div>
+                    </div>
+                    <button class="w-full mt-6 btn-primary py-3 rounded-full font-semibold" onclick="showProgramDetails('nursery')">
+                        Learn More
+                    </button>
+                </div>
+                
+                <!-- Primary Programs -->
+                <div class="program-card bg-warm-white rounded-2xl p-8 reveal-element" data-category="primary">
+                    <div class="text-4xl mb-6">📖</div>
+                    <h3 class="font-display text-2xl font-bold text-forest-green mb-4">Classes I-V</h3>
+                    <p class="text-charcoal-gray leading-relaxed mb-6">
+                        Foundation building with emphasis on core subjects, creativity, and character development.
+                    </p>
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm font-medium">Age Group</span>
+                            <span class="text-sm text-muted-blue">6-11 years</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm font-medium">Core Subjects</span>
+                            <span class="text-sm text-muted-blue">5 subjects</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm font-medium">Co-curricular</span>
+                            <span class="text-sm text-muted-blue">8 activities</span>
+                        </div>
+                    </div>
+                    <button class="w-full mt-6 btn-primary py-3 rounded-full font-semibold" onclick="showProgramDetails('primary')">
+                        Learn More
+                    </button>
+                </div>
+                
+                <!-- Secondary Programs -->
+                <div class="program-card bg-warm-white rounded-2xl p-8 reveal-element" data-category="secondary">
+                    <div class="text-4xl mb-6">🔬</div>
+                    <h3 class="font-display text-2xl font-bold text-forest-green mb-4">Classes VI-X</h3>
+                    <p class="text-charcoal-gray leading-relaxed mb-6">
+                        Comprehensive curriculum with specialized subjects and preparation for board examinations.
+                    </p>
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm font-medium">Age Group</span>
+                            <span class="text-sm text-muted-blue">12-16 years</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm font-medium">Core Subjects</span>
+                            <span class="text-sm text-muted-blue">6 subjects</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm font-medium">Practical Labs</span>
+                            <span class="text-sm text-muted-blue">3 labs</span>
+                        </div>
+                    </div>
+                    <button class="w-full mt-6 btn-primary py-3 rounded-full font-semibold" onclick="showProgramDetails('secondary')">
+                        Learn More
+                    </button>
+                </div>
+                
+                <!-- Senior Secondary Programs -->
+                <div class="program-card bg-warm-white rounded-2xl p-8 reveal-element" data-category="senior-secondary">
+                    <div class="text-4xl mb-6">🎓</div>
+                    <h3 class="font-display text-2xl font-bold text-forest-green mb-4">Classes XI-XII</h3>
+                    <p class="text-charcoal-gray leading-relaxed mb-6">
+                        Specialized streams with career-focused subjects and competitive exam preparation.
+                    </p>
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm font-medium">Age Group</span>
+                            <span class="text-sm text-muted-blue">17-18 years</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm font-medium">Streams</span>
+                            <span class="text-sm text-muted-blue">3 streams</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm font-medium">Subject Choices</span>
+                            <span class="text-sm text-muted-blue">15+ options</span>
+                        </div>
+                    </div>
+                    <button class="w-full mt-6 btn-primary py-3 rounded-full font-semibold" onclick="showProgramDetails('senior-secondary')">
+                        Learn More
+                    </button>
+                </div>
+                
+                <!-- Co-curricular Activities -->
+                <div class="program-card bg-warm-white rounded-2xl p-8 reveal-element" data-category="all">
+                    <div class="text-4xl mb-6">🎭</div>
+                    <h3 class="font-display text-2xl font-bold text-forest-green mb-4">Arts & Culture</h3>
+                    <p class="text-charcoal-gray leading-relaxed mb-6">
+                        Comprehensive arts program including music, dance, drama, and visual arts for creative development.
+                    </p>
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm font-medium">Activities</span>
+                            <span class="text-sm text-muted-blue">12+ options</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm font-medium">Annual Events</span>
+                            <span class="text-sm text-muted-blue">5 major events</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm font-medium">Expert Faculty</span>
+                            <span class="text-sm text-muted-blue">Specialized teachers</span>
+                        </div>
+                    </div>
+                    <button class="w-full mt-6 btn-primary py-3 rounded-full font-semibold" onclick="showProgramDetails('arts')">
+                        Learn More
+                    </button>
+                </div>
+                
+                <!-- Sports Program -->
+                <div class="program-card bg-warm-white rounded-2xl p-8 reveal-element" data-category="all">
+                    <div class="text-4xl mb-6">⚽</div>
+                    <h3 class="font-display text-2xl font-bold text-forest-green mb-4">Sports & Physical Education</h3>
+                    <p class="text-charcoal-gray leading-relaxed mb-6">
+                        Comprehensive sports program with professional coaching and state-of-the-art facilities.
+                    </p>
+                    <div class="space-y-3">
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm font-medium">Sports</span>
+                            <span class="text-sm text-muted-blue">10+ options</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm font-medium">Coaches</span>
+                            <span class="text-sm text-muted-blue">Certified trainers</span>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <span class="text-sm font-medium">Competitions</span>
+                            <span class="text-sm text-muted-blue">Inter-school & state</span>
+                        </div>
+                    </div>
+                    <button class="w-full mt-6 btn-primary py-3 rounded-full font-semibold" onclick="showProgramDetails('sports')">
+                        Learn More
+                    </button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Academic Achievements -->
+    <section class="py-20 bg-warm-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="font-display text-4xl lg:text-5xl font-bold text-forest-green mb-6 reveal-element">
+                    Academic Achievements
+                </h2>
+                <p class="text-xl text-charcoal-gray max-w-3xl mx-auto reveal-element">
+                    Consistent excellence in board examinations and competitive assessments
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <div class="reveal-element">
+                    <div id="results-chart" class="w-full h-96 bg-warm-cream rounded-2xl p-6"></div>
+                </div>
+                
+                <div class="reveal-element">
+                    <h3 class="font-display text-3xl font-bold text-forest-green mb-8">Board Results Excellence</h3>
+                    <div class="space-y-8">
+                        <div>
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="font-semibold text-charcoal-gray">Students scoring 90%+</span>
+                                <span class="text-forest-green font-bold">95%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" data-width="95"></div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="font-semibold text-charcoal-gray">First Division</span>
+                                <span class="text-forest-green font-bold">100%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" data-width="100"></div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="font-semibold text-charcoal-gray">Subject Toppers</span>
+                                <span class="text-forest-green font-bold">85%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" data-width="85"></div>
+                            </div>
+                        </div>
+                        
+                        <div>
+                            <div class="flex justify-between items-center mb-2">
+                                <span class="font-semibold text-charcoal-gray">University Placements</span>
+                                <span class="text-forest-green font-bold">92%</span>
+                            </div>
+                            <div class="progress-bar">
+                                <div class="progress-fill" data-width="92"></div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="mt-12 grid grid-cols-2 gap-6">
+                        <div class="text-center p-6 bg-warm-cream rounded-xl">
+                            <div class="text-3xl font-bold text-coral-pink mb-2">15</div>
+                            <div class="text-sm text-charcoal-gray">Years of Excellence</div>
+                        </div>
+                        <div class="text-center p-6 bg-warm-cream rounded-xl">
+                            <div class="text-3xl font-bold text-muted-blue mb-2">98%</div>
+                            <div class="text-sm text-charcoal-gray">Overall Pass Rate</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Faculty Excellence -->
+    <section class="py-20 bg-forest-green text-warm-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="font-display text-4xl lg:text-5xl font-bold mb-6 reveal-element">
+                    Faculty Excellence
+                </h2>
+                <p class="text-xl opacity-90 max-w-3xl mx-auto reveal-element">
+                    Highly qualified and experienced educators dedicated to student success
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+                <div class="text-center reveal-element">
+                    <div class="bg-warm-white text-forest-green w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 text-2xl font-bold">
+                        50+
+                    </div>
+                    <h3 class="font-semibold text-lg mb-2">Faculty Members</h3>
+                    <p class="text-sm opacity-75">Highly qualified teachers</p>
+                </div>
+                
+                <div class="text-center reveal-element">
+                    <div class="bg-warm-white text-forest-green w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 text-2xl">
+                        🎓
+                    </div>
+                    <h3 class="font-semibold text-lg mb-2">Qualifications</h3>
+                    <p class="text-sm opacity-75">Post-graduate & B.Ed degrees</p>
+                </div>
+                
+                <div class="text-center reveal-element">
+                    <div class="bg-warm-white text-forest-green w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 text-2xl">
+                        📚
+                    </div>
+                    <h3 class="font-semibold text-lg mb-2">Experience</h3>
+                    <p class="text-sm opacity-75">Average 8+ years teaching</p>
+                </div>
+                
+                <div class="text-center reveal-element">
+                    <div class="bg-warm-white text-forest-green w-20 h-20 rounded-full flex items-center justify-center mx-auto mb-6 text-2xl">
+                        🏆
+                    </div>
+                    <h3 class="font-semibold text-lg mb-2">Awards</h3>
+                    <p class="text-sm opacity-75">Best Teacher Awards</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-charcoal-gray text-warm-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <div class="font-display text-2xl font-bold text-soft-gold mb-4">
+                        Ishwar International
+                    </div>
+                    <p class="text-sm opacity-75 mb-4">
+                        Excellence in education, character, and community.
+                    </p>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Quick Links</h4>
+                    <ul class="space-y-2 text-sm opacity-75">
+                        <li><a href="about.html" class="hover:text-soft-gold transition-colors">About Us</a></li>
+                        <li><a href="academics.html" class="hover:text-soft-gold transition-colors">Academics</a></li>
+                        <li><a href="contact.html" class="hover:text-soft-gold transition-colors">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Contact Info</h4>
+                    <div class="text-sm opacity-75 space-y-2">
+                        <p>📍 School Location</p>
+                        <p>📞 +91 12345 67890</p>
+                        <p>✉️ info@ishwarinternational.edu</p>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Office Hours</h4>
+                    <div class="text-sm opacity-75 space-y-1">
+                        <p>Mon - Fri: 8:00 AM - 4:00 PM</p>
+                        <p>Sat: 9:00 AM - 2:00 PM</p>
+                        <p>Sun: Closed</p>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-600 mt-8 pt-8 text-center text-sm opacity-50">
+                <p>&copy; 2025 Ishwar International School. All rights reserved. | Affiliated to CBSE</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+    <script>
+        // Program Explorer specific functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            initProgramExplorer();
+            initResultsChart();
+            initProgressBars();
+        });
+        
+        function initProgramExplorer() {
+            const filterButtons = document.querySelectorAll('.filter-btn');
+            const programCards = document.querySelectorAll('.program-card');
+            
+            filterButtons.forEach(button => {
+                button.addEventListener('click', function() {
+                    const filter = this.dataset.filter;
+                    
+                    // Update active button
+                    filterButtons.forEach(btn => btn.classList.remove('active'));
+                    this.classList.add('active');
+                    
+                    // Filter cards
+                    programCards.forEach(card => {
+                        const category = card.dataset.category;
+                        if (filter === 'all' || category === filter || category === 'all') {
+                            card.classList.remove('hidden');
+                            anime({
+                                targets: card,
+                                opacity: [0, 1],
+                                translateY: [20, 0],
+                                duration: 400,
+                                easing: 'easeOutCubic'
+                            });
+                        } else {
+                            card.classList.add('hidden');
+                        }
+                    });
+                });
+            });
+        }
+        
+        function initResultsChart() {
+            const chartContainer = document.getElementById('results-chart');
+            if (!chartContainer) return;
+            
+            const chart = echarts.init(chartContainer);
+            
+            const option = {
+                title: {
+                    text: 'Board Results Performance',
+                    left: 'center',
+                    textStyle: {
+                        color: '#2D5A3D',
+                        fontSize: 18,
+                        fontWeight: 'bold'
+                    }
+                },
+                tooltip: {
+                    trigger: 'axis',
+                    axisPointer: {
+                        type: 'shadow'
+                    }
+                },
+                grid: {
+                    left: '3%',
+                    right: '4%',
+                    bottom: '3%',
+                    containLabel: true
+                },
+                xAxis: {
+                    type: 'category',
+                    data: ['2020', '2021', '2022', '2023', '2024'],
+                    axisLabel: {
+                        color: '#3A3A3A'
+                    }
+                },
+                yAxis: {
+                    type: 'value',
+                    max: 100,
+                    axisLabel: {
+                        color: '#3A3A3A',
+                        formatter: '{value}%'
+                    }
+                },
+                series: [
+                    {
+                        name: 'Pass Percentage',
+                        type: 'bar',
+                        data: [98, 97, 99, 98, 100],
+                        itemStyle: {
+                            color: '#2D5A3D'
+                        },
+                        barWidth: '40%'
+                    },
+                    {
+                        name: '90%+ Scorers',
+                        type: 'line',
+                        data: [92, 94, 93, 96, 95],
+                        itemStyle: {
+                            color: '#E07A5F'
+                        },
+                        lineStyle: {
+                            width: 3
+                        },
+                        symbol: 'circle',
+                        symbolSize: 8
+                    }
+                ],
+                legend: {
+                    data: ['Pass Percentage', '90%+ Scorers'],
+                    bottom: 10,
+                    textStyle: {
+                        color: '#3A3A3A'
+                    }
+                }
+            };
+            
+            const chartObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        chart.setOption(option, true);
+                        chartObserver.unobserve(entry.target);
+                    }
+                });
+            }, { threshold: 0.3 });
+            
+            chartObserver.observe(chartContainer);
+            
+            window.addEventListener('resize', function() {
+                chart.resize();
+            });
+        }
+        
+        function initProgressBars() {
+            const progressBars = document.querySelectorAll('.progress-fill');
+            
+            const progressObserver = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        const bar = entry.target;
+                        const width = bar.dataset.width;
+                        
+                        anime({
+                            targets: bar,
+                            width: width + '%',
+                            duration: 1500,
+                            easing: 'easeOutCubic',
+                            delay: 200
+                        });
+                        
+                        progressObserver.unobserve(bar);
+                    }
+                });
+            }, { threshold: 0.5 });
+            
+            progressBars.forEach(bar => {
+                progressObserver.observe(bar);
+            });
+        }
+        
+        function showProgramDetails(programType) {
+            const programDetails = {
+                'nursery': {
+                    title: 'Nursery & Kindergarten Program',
+                    description: 'Our early childhood program focuses on play-based learning, developing cognitive, social, and motor skills through structured activities.',
+                    features: [
+                        'Play-based learning methodology',
+                        'Individual attention and care',
+                        'Motor skill development',
+                        'Social interaction training',
+                        'Creative expression activities',
+                        'Regular progress assessment'
+                    ]
+                },
+                'primary': {
+                    title: 'Primary School Program (Classes I-V)',
+                    description: 'Foundation building program with emphasis on core subjects, creativity, and character development through interactive learning.',
+                    features: [
+                        'Strong foundation in core subjects',
+                        'Interactive learning methods',
+                        'Character development programs',
+                        'Regular parent-teacher interaction',
+                        'Co-curricular activities',
+                        'Individual learning support'
+                    ]
+                },
+                'secondary': {
+                    title: 'Secondary School Program (Classes VI-X)',
+                    description: 'Comprehensive curriculum with specialized subjects, practical learning, and preparation for board examinations.',
+                    features: [
+                        'CBSE curriculum compliance',
+                        'Science laboratory practicals',
+                        'Computer education',
+                        'Career guidance sessions',
+                        'Leadership development',
+                        'Board exam preparation'
+                    ]
+                },
+                'senior-secondary': {
+                    title: 'Senior Secondary Program (Classes XI-XII)',
+                    description: 'Specialized streams with career-focused subjects, competitive exam preparation, and university readiness programs.',
+                    features: [
+                        'Science, Commerce, Arts streams',
+                        'Professional subject experts',
+                        'Competitive exam coaching',
+                        'University preparation',
+                        'Career counseling',
+                        'Research projects'
+                    ]
+                },
+                'arts': {
+                    title: 'Arts & Cultural Program',
+                    description: 'Comprehensive arts program including music, dance, drama, and visual arts for creative development and cultural appreciation.',
+                    features: [
+                        'Music and vocal training',
+                        'Classical and contemporary dance',
+                        'Theater and drama workshops',
+                        'Visual arts and crafts',
+                        'Cultural festivals',
+                        'Art exhibitions'
+                    ]
+                },
+                'sports': {
+                    title: 'Sports & Physical Education Program',
+                    description: 'Comprehensive sports program with professional coaching, fitness training, and competitive sports opportunities.',
+                    features: [
+                        'Multiple sports options',
+                        'Professional coaching',
+                        'Fitness and wellness programs',
+                        'Inter-school competitions',
+                        'Sports day events',
+                        'Nutrition guidance'
+                    ]
+                }
+            };
+            
+            const details = programDetails[programType];
+            if (!details) return;
+            
+            // Create modal
+            const modal = document.createElement('div');
+            modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4';
+            modal.innerHTML = `
+                <div class="bg-white rounded-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto">
+                    <div class="p-8">
+                        <div class="flex justify-between items-start mb-6">
+                            <h3 class="font-display text-3xl font-bold text-forest-green">${details.title}</h3>
+                            <button class="text-gray-500 hover:text-gray-700 text-2xl" onclick="this.closest('.fixed').remove()">×</button>
+                        </div>
+                        <p class="text-lg text-charcoal-gray leading-relaxed mb-8">${details.description}</p>
+                        <h4 class="font-semibold text-xl text-forest-green mb-4">Key Features:</h4>
+                        <ul class="space-y-3 mb-8">
+                            ${details.features.map(feature => `
+                                <li class="flex items-start space-x-3">
+                                    <div class="w-2 h-2 bg-coral-pink rounded-full mt-2 flex-shrink-0"></div>
+                                    <span class="text-charcoal-gray">${feature}</span>
+                                </li>
+                            `).join('')}
+                        </ul>
+                        <div class="flex gap-4">
+                            <button class="btn-primary px-8 py-3 rounded-full font-semibold" onclick="window.location.href='contact.html'">
+                                Apply Now
+                            </button>
+                            <button class="border-2 border-forest-green text-forest-green px-8 py-3 rounded-full font-semibold hover:bg-forest-green hover:text-white transition-all" onclick="this.closest('.fixed').remove()">
+                                Close
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            
+            // Animate modal appearance
+            anime({
+                targets: modal.querySelector('.bg-white'),
+                scale: [0.8, 1],
+                opacity: [0, 1],
+                duration: 300,
+                easing: 'easeOutCubic'
+            });
+            
+            // Close on background click
+            modal.addEventListener('click', function(e) {
+                if (e.target === modal) {
+                    modal.remove();
+                }
+            });
+        }
+    </script>
+</body>
+</html>

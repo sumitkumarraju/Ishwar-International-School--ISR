@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact & Admissions - Ishwar International School</title>
+    <meta name="description" content="Get in touch with Ishwar International School for admissions, inquiries, and information. Easy admission process with dedicated support.">
+    
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Animation Libraries -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/animejs/3.2.1/anime.min.js"></script>
+    <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+    
+    <style>
+        :root {
+            --forest-green: #2D5A3D;
+            --warm-cream: #F8F6F0;
+            --charcoal-gray: #3A3A3A;
+            --soft-gold: #D4AF37;
+            --muted-blue: #5B7C99;
+            --light-sage: #A8B5A0;
+            --coral-pink: #E07A5F;
+            --warm-white: #FEFEFE;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: var(--warm-cream);
+            color: var(--charcoal-gray);
+        }
+        
+        .font-display {
+            font-family: 'Playfair Display', serif;
+        }
+        
+        .hero-bg {
+            background: linear-gradient(135deg, var(--forest-green) 0%, var(--muted-blue) 100%);
+        }
+        
+        .card-hover {
+            transition: all 0.3s ease;
+        }
+        
+        .card-hover:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 40px rgba(45, 90, 61, 0.15);
+        }
+        
+        .btn-primary {
+            background: var(--forest-green);
+            color: var(--warm-white);
+            transition: all 0.3s ease;
+        }
+        
+        .btn-primary:hover {
+            background: var(--muted-blue);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(45, 90, 61, 0.3);
+        }
+        
+        .reveal-element {
+            opacity: 0;
+            transform: translateY(30px);
+        }
+        
+        .form-input {
+            border: 2px solid var(--light-sage);
+            transition: all 0.3s ease;
+        }
+        
+        .form-input:focus {
+            border-color: var(--forest-green);
+            box-shadow: 0 0 0 3px rgba(45, 90, 61, 0.1);
+            outline: none;
+        }
+        
+        .form-step {
+            display: none;
+        }
+        
+        .form-step.active {
+            display: block;
+        }
+        
+        .step-indicator {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: var(--light-sage);
+            color: var(--warm-white);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        
+        .step-indicator.active {
+            background: var(--forest-green);
+        }
+        
+        .step-indicator.completed {
+            background: var(--coral-pink);
+        }
+        
+        .floating-shapes {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            overflow: hidden;
+        }
+        
+        .shape {
+            position: absolute;
+            opacity: 0.1;
+            animation: float 6s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(180deg); }
+        }
+        
+        #map {
+            height: 400px;
+            border-radius: 1rem;
+        }
+        
+        .faq-item {
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .faq-item:hover {
+            background-color: var(--warm-cream);
+        }
+        
+        .faq-answer {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.3s ease;
+        }
+        
+        .faq-answer.open {
+            max-height: 200px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="fixed top-0 w-full bg-white/95 backdrop-blur-sm z-50 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <div class="font-display text-2xl font-bold text-forest-green">
+                        Ishwar International
+                    </div>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="index.html" class="text-charcoal-gray hover:text-forest-green transition-colors">Home</a>
+                    <a href="about.html" class="text-charcoal-gray hover:text-forest-green transition-colors">About</a>
+                    <a href="academics.html" class="text-charcoal-gray hover:text-forest-green transition-colors">Academics</a>
+                    <a href="contact.html" class="text-forest-green font-medium border-b-2 border-coral-pink">Contact</a>
+                </div>
+                <button class="btn-primary px-6 py-2 rounded-full font-medium">
+                    Admission Enquiry
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Page Header -->
+    <section class="relative pt-20 pb-16 hero-bg overflow-hidden">
+        <div class="floating-shapes">
+            <div class="shape w-16 h-16 bg-soft-gold rounded-full top-20 left-10"></div>
+            <div class="shape w-12 h-12 bg-light-sage rounded-full top-40 right-20"></div>
+            <div class="shape w-20 h-20 bg-coral-pink rounded-full bottom-32 left-1/4"></div>
+        </div>
+        
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center text-warm-white">
+                <h1 class="font-display text-5xl lg:text-6xl font-bold mb-6 reveal-element">
+                    Contact & Admissions
+                </h1>
+                <p class="text-xl lg:text-2xl opacity-90 max-w-3xl mx-auto reveal-element">
+                    Start your child's educational journey with us - simple process, dedicated support
+                </p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Information -->
+    <section class="py-20 bg-warm-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-12">
+                <div class="reveal-element">
+                    <div class="bg-warm-cream rounded-2xl p-8 h-full">
+                        <div class="text-4xl mb-6">📍</div>
+                        <h3 class="font-display text-2xl font-bold text-forest-green mb-4">Visit Us</h3>
+                        <div class="space-y-3 text-charcoal-gray">
+                            <p class="font-semibold">Ishwar International School</p>
+                            <p>123 Education Street</p>
+                            <p>Knowledge City, Learning State</p>
+                            <p>Pin Code: 123456</p>
+                        </div>
+                        <div class="mt-6">
+                            <h4 class="font-semibold text-forest-green mb-2">Landmarks:</h4>
+                            <ul class="text-sm text-charcoal-gray space-y-1">
+                                <li>• Near City Hospital</li>
+                                <li>• Opposite Central Park</li>
+                                <li>• 2 km from Railway Station</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="reveal-element">
+                    <div class="bg-warm-cream rounded-2xl p-8 h-full">
+                        <div class="text-4xl mb-6">📞</div>
+                        <h3 class="font-display text-2xl font-bold text-forest-green mb-4">Call Us</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <p class="font-semibold text-forest-green">Admission Enquiries:</p>
+                                <p class="text-charcoal-gray">+91 98765 43210</p>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-forest-green">General Information:</p>
+                                <p class="text-charcoal-gray">+91 12345 67890</p>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-forest-green">Emergency Contact:</p>
+                                <p class="text-charcoal-gray">+91 98765 12345</p>
+                            </div>
+                        </div>
+                        <div class="mt-6">
+                            <h4 class="font-semibold text-forest-green mb-2">Office Hours:</h4>
+                            <div class="text-sm text-charcoal-gray space-y-1">
+                                <p>Monday - Friday: 8:00 AM - 4:00 PM</p>
+                                <p>Saturday: 9:00 AM - 2:00 PM</p>
+                                <p>Sunday: Closed</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="reveal-element">
+                    <div class="bg-warm-cream rounded-2xl p-8 h-full">
+                        <div class="text-4xl mb-6">✉️</div>
+                        <h3 class="font-display text-2xl font-bold text-forest-green mb-4">Email Us</h3>
+                        <div class="space-y-4">
+                            <div>
+                                <p class="font-semibold text-forest-green">Admissions:</p>
+                                <p class="text-charcoal-gray">admissions@ishwarinternational.edu</p>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-forest-green">General Information:</p>
+                                <p class="text-charcoal-gray">info@ishwarinternational.edu</p>
+                            </div>
+                            <div>
+                                <p class="font-semibold text-forest-green">Principal's Office:</p>
+                                <p class="text-charcoal-gray">principal@ishwarinternational.edu</p>
+                            </div>
+                        </div>
+                        <div class="mt-6">
+                            <h4 class="font-semibold text-forest-green mb-2">Response Time:</h4>
+                            <p class="text-sm text-charcoal-gray">We respond to all emails within 24 hours during working days.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Admission Inquiry Form -->
+    <section class="py-20 bg-warm-cream">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="font-display text-4xl lg:text-5xl font-bold text-forest-green mb-6 reveal-element">
+                    Admission Inquiry Form
+                </h2>
+                <p class="text-xl text-charcoal-gray max-w-3xl mx-auto reveal-element">
+                    Take the first step towards your child's bright future with us
+                </p>
+            </div>
+            
+            <div class="bg-warm-white rounded-3xl p-8 lg:p-12 reveal-element">
+                <!-- Step Indicators -->
+                <div class="flex justify-center mb-12">
+                    <div class="flex items-center space-x-8">
+                        <div class="flex flex-col items-center">
+                            <div class="step-indicator active" id="step-1-indicator">1</div>
+                            <span class="text-sm mt-2 text-charcoal-gray">Student Info</span>
+                        </div>
+                        <div class="w-16 h-1 bg-light-sage"></div>
+                        <div class="flex flex-col items-center">
+                            <div class="step-indicator" id="step-2-indicator">2</div>
+                            <span class="text-sm mt-2 text-charcoal-gray">Academic Details</span>
+                        </div>
+                        <div class="w-16 h-1 bg-light-sage"></div>
+                        <div class="flex flex-col items-center">
+                            <div class="step-indicator" id="step-3-indicator">3</div>
+                            <span class="text-sm mt-2 text-charcoal-gray">Contact Info</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <form id="admission-form">
+                    <!-- Step 1: Student Information -->
+                    <div class="form-step active" id="step-1">
+                        <h3 class="font-display text-2xl font-bold text-forest-green mb-8">Student Information</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-semibold text-charcoal-gray mb-2">Student Name *</label>
+                                <input type="text" name="studentName" required class="form-input w-full px-4 py-3 rounded-lg" placeholder="Enter student's full name">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-charcoal-gray mb-2">Date of Birth *</label>
+                                <input type="date" name="dateOfBirth" required class="form-input w-full px-4 py-3 rounded-lg">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-charcoal-gray mb-2">Gender *</label>
+                                <select name="gender" required class="form-input w-full px-4 py-3 rounded-lg">
+                                    <option value="">Select Gender</option>
+                                    <option value="male">Male</option>
+                                    <option value="female">Female</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-charcoal-gray mb-2">Current Grade *</label>
+                                <select name="currentGrade" required class="form-input w-full px-4 py-3 rounded-lg">
+                                    <option value="">Select Current Grade</option>
+                                    <option value="nursery">Nursery</option>
+                                    <option value="kg">Kindergarten</option>
+                                    <option value="1">Class I</option>
+                                    <option value="2">Class II</option>
+                                    <option value="3">Class III</option>
+                                    <option value="4">Class IV</option>
+                                    <option value="5">Class V</option>
+                                    <option value="6">Class VI</option>
+                                    <option value="7">Class VII</option>
+                                    <option value="8">Class VIII</option>
+                                    <option value="9">Class IX</option>
+                                    <option value="10">Class X</option>
+                                    <option value="11">Class XI</option>
+                                    <option value="12">Class XII</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mt-6">
+                            <label class="block text-sm font-semibold text-charcoal-gray mb-2">Previous School (if applicable)</label>
+                            <input type="text" name="previousSchool" class="form-input w-full px-4 py-3 rounded-lg" placeholder="Name of previous school">
+                        </div>
+                        <div class="flex justify-end mt-8">
+                            <button type="button" class="btn-primary px-8 py-3 rounded-full font-semibold" onclick="nextStep(2)">
+                                Next Step
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Step 2: Academic Details -->
+                    <div class="form-step" id="step-2">
+                        <h3 class="font-display text-2xl font-bold text-forest-green mb-8">Academic Details</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-semibold text-charcoal-gray mb-2">Desired Grade *</label>
+                                <select name="desiredGrade" required class="form-input w-full px-4 py-3 rounded-lg">
+                                    <option value="">Select Desired Grade</option>
+                                    <option value="nursery">Nursery</option>
+                                    <option value="kg">Kindergarten</option>
+                                    <option value="1">Class I</option>
+                                    <option value="2">Class II</option>
+                                    <option value="3">Class III</option>
+                                    <option value="4">Class IV</option>
+                                    <option value="5">Class V</option>
+                                    <option value="6">Class VI</option>
+                                    <option value="7">Class VII</option>
+                                    <option value="8">Class VIII</option>
+                                    <option value="9">Class IX</option>
+                                    <option value="10">Class X</option>
+                                    <option value="11">Class XI</option>
+                                    <option value="12">Class XII</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-charcoal-gray mb-2">Academic Year *</label>
+                                <select name="academicYear" required class="form-input w-full px-4 py-3 rounded-lg">
+                                    <option value="">Select Academic Year</option>
+                                    <option value="2025-26">2025-2026</option>
+                                    <option value="2026-27">2026-2027</option>
+                                    <option value="2027-28">2027-2028</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-charcoal-gray mb-2">Stream Preference (for XI-XII)</label>
+                                <select name="stream" class="form-input w-full px-4 py-3 rounded-lg">
+                                    <option value="">Select Stream</option>
+                                    <option value="science">Science</option>
+                                    <option value="commerce">Commerce</option>
+                                    <option value="arts">Arts</option>
+                                    <option value="not-applicable">Not Applicable</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-charcoal-gray mb-2">Special Interests</label>
+                                <select name="interests" class="form-input w-full px-4 py-3 rounded-lg">
+                                    <option value="">Select Primary Interest</option>
+                                    <option value="academics">Academics</option>
+                                    <option value="sports">Sports</option>
+                                    <option value="arts">Arts & Culture</option>
+                                    <option value="music">Music</option>
+                                    <option value="dance">Dance</option>
+                                    <option value="science">Science & Technology</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="mt-6">
+                            <label class="block text-sm font-semibold text-charcoal-gray mb-2">Additional Information</label>
+                            <textarea name="additionalInfo" rows="4" class="form-input w-full px-4 py-3 rounded-lg" placeholder="Any additional information about the student, special needs, achievements, etc."></textarea>
+                        </div>
+                        <div class="flex justify-between mt-8">
+                            <button type="button" class="border-2 border-forest-green text-forest-green px-8 py-3 rounded-full font-semibold hover:bg-forest-green hover:text-white transition-all" onclick="prevStep(1)">
+                                Previous
+                            </button>
+                            <button type="button" class="btn-primary px-8 py-3 rounded-full font-semibold" onclick="nextStep(3)">
+                                Next Step
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Step 3: Contact Information -->
+                    <div class="form-step" id="step-3">
+                        <h3 class="font-display text-2xl font-bold text-forest-green mb-8">Contact Information</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div>
+                                <label class="block text-sm font-semibold text-charcoal-gray mb-2">Parent/Guardian Name *</label>
+                                <input type="text" name="parentName" required class="form-input w-full px-4 py-3 rounded-lg" placeholder="Enter parent's full name">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-charcoal-gray mb-2">Relationship *</label>
+                                <select name="relationship" required class="form-input w-full px-4 py-3 rounded-lg">
+                                    <option value="">Select Relationship</option>
+                                    <option value="father">Father</option>
+                                    <option value="mother">Mother</option>
+                                    <option value="guardian">Guardian</option>
+                                    <option value="grandparent">Grandparent</option>
+                                    <option value="other">Other</option>
+                                </select>
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-charcoal-gray mb-2">Phone Number *</label>
+                                <input type="tel" name="phone" required class="form-input w-full px-4 py-3 rounded-lg" placeholder="+91 98765 43210">
+                            </div>
+                            <div>
+                                <label class="block text-sm font-semibold text-charcoal-gray mb-2">Email Address *</label>
+                                <input type="email" name="email" required class="form-input w-full px-4 py-3 rounded-lg" placeholder="parent@email.com">
+                            </div>
+                            <div class="md:col-span-2">
+                                <label class="block text-sm font-semibold text-charcoal-gray mb-2">Residential Address *</label>
+                                <textarea name="address" required rows="3" class="form-input w-full px-4 py-3 rounded-lg" placeholder="Complete residential address"></textarea>
+                            </div>
+                        </div>
+                        <div class="mt-6">
+                            <label class="flex items-center space-x-3">
+                                <input type="checkbox" name="consent" required class="w-5 h-5 text-forest-green">
+                                <span class="text-sm text-charcoal-gray">I agree to receive communications from Ishwar International School and understand that my information will be used for admission purposes.*</span>
+                            </label>
+                        </div>
+                        <div class="flex justify-between mt-8">
+                            <button type="button" class="border-2 border-forest-green text-forest-green px-8 py-3 rounded-full font-semibold hover:bg-forest-green hover:text-white transition-all" onclick="prevStep(2)">
+                                Previous
+                            </button>
+                            <button type="submit" class="btn-primary px-8 py-3 rounded-full font-semibold">
+                                Submit Application
+                            </button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </section>
+
+    <!-- Map Section -->
+    <section class="py-20 bg-warm-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="font-display text-4xl lg:text-5xl font-bold text-forest-green mb-6 reveal-element">
+                    Find Us
+                </h2>
+                <p class="text-xl text-charcoal-gray max-w-3xl mx-auto reveal-element">
+                    Located in the heart of the city with easy accessibility
+                </p>
+            </div>
+            
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-16 items-center">
+                <div class="reveal-element">
+                    <div id="map"></div>
+                </div>
+                
+                <div class="reveal-element">
+                    <h3 class="font-display text-3xl font-bold text-forest-green mb-8">How to Reach Us</h3>
+                    <div class="space-y-6">
+                        <div class="flex items-start space-x-4">
+                            <div class="text-2xl">🚌</div>
+                            <div>
+                                <h4 class="font-semibold text-forest-green mb-2">Public Transport</h4>
+                                <p class="text-charcoal-gray">City Bus Stop: 2 minutes walk<br>
+                                Route Numbers: 15A, 23B, 45C</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start space-x-4">
+                            <div class="text-2xl">🚗</div>
+                            <div>
+                                <h4 class="font-semibold text-forest-green mb-2">By Car</h4>
+                                <p class="text-charcoal-gray">Ample parking space available<br>
+                                GPS: Search "Ishwar International School"</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start space-x-4">
+                            <div class="text-2xl">🚆</div>
+                            <div>
+                                <h4 class="font-semibold text-forest-green mb-2">By Train</h4>
+                                <p class="text-charcoal-gray">Nearest Station: Central Railway (2km)<br>
+                                Auto-rickshaw: 10 minutes</p>
+                            </div>
+                        </div>
+                        
+                        <div class="flex items-start space-x-4">
+                            <div class="text-2xl">✈️</div>
+                            <div>
+                                <h4 class="font-semibold text-forest-green mb-2">By Air</h4>
+                                <p class="text-charcoal-gray">Airport: 25 km from school<br>
+                                Taxi/Cab: 45 minutes</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- FAQ Section -->
+    <section class="py-20 bg-warm-cream">
+        <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center mb-16">
+                <h2 class="font-display text-4xl lg:text-5xl font-bold text-forest-green mb-6 reveal-element">
+                    Frequently Asked Questions
+                </h2>
+                <p class="text-xl text-charcoal-gray max-w-3xl mx-auto reveal-element">
+                    Get answers to common questions about admissions and school life
+                </p>
+            </div>
+            
+            <div class="space-y-4 reveal-element">
+                <div class="bg-warm-white rounded-2xl p-6 faq-item" onclick="toggleFAQ(this)">
+                    <div class="flex justify-between items-center">
+                        <h3 class="font-semibold text-lg text-forest-green">What is the admission process?</h3>
+                        <span class="text-2xl text-forest-green">+</span>
+                    </div>
+                    <div class="faq-answer mt-4">
+                        <p class="text-charcoal-gray leading-relaxed">
+                            Our admission process includes: 1) Online application submission, 2) Document verification, 3) Entrance assessment (if required), 4) Parent interaction, and 5) Fee payment and confirmation.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="bg-warm-white rounded-2xl p-6 faq-item" onclick="toggleFAQ(this)">
+                    <div class="flex justify-between items-center">
+                        <h3 class="font-semibold text-lg text-forest-green">What are the fee structure and payment options?</h3>
+                        <span class="text-2xl text-forest-green">+</span>
+                    </div>
+                    <div class="faq-answer mt-4">
+                        <p class="text-charcoal-gray leading-relaxed">
+                            Fee structure varies by grade level. We offer flexible payment options including quarterly, half-yearly, and annual payments. Detailed fee information is provided during the admission process.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="bg-warm-white rounded-2xl p-6 faq-item" onclick="toggleFAQ(this)">
+                    <div class="flex justify-between items-center">
+                        <h3 class="font-semibold text-lg text-forest-green">What documents are required for admission?</h3>
+                        <span class="text-2xl text-forest-green">+</span>
+                    </div>
+                    <div class="faq-answer mt-4">
+                        <p class="text-charcoal-gray leading-relaxed">
+                            Required documents include: Birth certificate, Previous school records (if applicable), Passport-sized photographs, Parent ID proof, and Address proof. Additional documents may be required for specific grades.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="bg-warm-white rounded-2xl p-6 faq-item" onclick="toggleFAQ(this)">
+                    <div class="flex justify-between items-center">
+                        <h3 class="font-semibold text-lg text-forest-green">Do you provide transportation facilities?</h3>
+                        <span class="text-2xl text-forest-green">+</span>
+                    </div>
+                    <div class="faq-answer mt-4">
+                        <p class="text-charcoal-gray leading-relaxed">
+                            Yes, we provide safe and reliable transportation services covering most areas of the city. Our buses are GPS-enabled with trained drivers and attendants for student safety.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="bg-warm-white rounded-2xl p-6 faq-item" onclick="toggleFAQ(this)">
+                    <div class="flex justify-between items-center">
+                        <h3 class="font-semibold text-lg text-forest-green">What co-curricular activities are offered?</h3>
+                        <span class="text-2xl text-forest-green">+</span>
+                    </div>
+                    <div class="faq-answer mt-4">
+                        <p class="text-charcoal-gray leading-relaxed">
+                            We offer a wide range of activities including sports, music, dance, art, drama, debate, robotics, and various clubs. Students can choose activities based on their interests and talents.
+                        </p>
+                    </div>
+                </div>
+                
+                <div class="bg-warm-white rounded-2xl p-6 faq-item" onclick="toggleFAQ(this)">
+                    <div class="flex justify-between items-center">
+                        <h3 class="font-semibold text-lg text-forest-green">Is there an entrance exam for admission?</h3>
+                        <span class="text-2xl text-forest-green">+</span>
+                    </div>
+                    <div class="faq-answer mt-4">
+                        <p class="text-charcoal-gray leading-relaxed">
+                            Entrance assessments may be required for certain grades to understand the student's academic level. The assessment is friendly and helps us provide appropriate support for the student's success.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-charcoal-gray text-warm-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-4 gap-8">
+                <div>
+                    <div class="font-display text-2xl font-bold text-soft-gold mb-4">
+                        Ishwar International
+                    </div>
+                    <p class="text-sm opacity-75 mb-4">
+                        Excellence in education, character, and community.
+                    </p>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Quick Links</h4>
+                    <ul class="space-y-2 text-sm opacity-75">
+                        <li><a href="about.html" class="hover:text-soft-gold transition-colors">About Us</a></li>
+                        <li><a href="academics.html" class="hover:text-soft-gold transition-colors">Academics</a></li>
+                        <li><a href="contact.html" class="hover:text-soft-gold transition-colors">Contact</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Contact Info</h4>
+                    <div class="text-sm opacity-75 space-y-2">
+                        <p>📍 School Location</p>
+                        <p>📞 +91 12345 67890</p>
+                        <p>✉️ info@ishwarinternational.edu</p>
+                    </div>
+                </div>
+                <div>
+                    <h4 class="font-semibold mb-4">Office Hours</h4>
+                    <div class="text-sm opacity-75 space-y-1">
+                        <p>Mon - Fri: 8:00 AM - 4:00 PM</p>
+                        <p>Sat: 9:00 AM - 2:00 PM</p>
+                        <p>Sun: Closed</p>
+                    </div>
+                </div>
+            </div>
+            <div class="border-t border-gray-600 mt-8 pt-8 text-center text-sm opacity-50">
+                <p>&copy; 2025 Ishwar International School. All rights reserved. | Affiliated to CBSE</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="main.js"></script>
+    <script>
+        // Contact page specific functionality
+        document.addEventListener('DOMContentLoaded', function() {
+            initMap();
+            initForm();
+        });
+        
+        let currentStep = 1;
+        
+        function nextStep(step) {
+            // Validate current step
+            if (!validateStep(currentStep)) {
+                return;
+            }
+            
+            // Hide current step
+            document.getElementById(`step-${currentStep}`).classList.remove('active');
+            document.getElementById(`step-${currentStep}-indicator`).classList.remove('active');
+            document.getElementById(`step-${currentStep}-indicator`).classList.add('completed');
+            
+            // Show next step
+            currentStep = step;
+            document.getElementById(`step-${currentStep}`).classList.add('active');
+            document.getElementById(`step-${currentStep}-indicator`).classList.add('active');
+            
+            // Animate step transition
+            anime({
+                targets: `#step-${currentStep}`,
+                opacity: [0, 1],
+                translateX: [50, 0],
+                duration: 400,
+                easing: 'easeOutCubic'
+            });
+        }
+        
+        function prevStep(step) {
+            // Hide current step
+            document.getElementById(`step-${currentStep}`).classList.remove('active');
+            document.getElementById(`step-${currentStep}-indicator`).classList.remove('active');
+            
+            // Show previous step
+            currentStep = step;
+            document.getElementById(`step-${currentStep}`).classList.add('active');
+            document.getElementById(`step-${currentStep}-indicator`).classList.add('active');
+            document.getElementById(`step-${currentStep}-indicator`).classList.remove('completed');
+            
+            // Animate step transition
+            anime({
+                targets: `#step-${currentStep}`,
+                opacity: [0, 1],
+                translateX: [-50, 0],
+                duration: 400,
+                easing: 'easeOutCubic'
+            });
+        }
+        
+        function validateStep(step) {
+            const stepElement = document.getElementById(`step-${step}`);
+            const requiredFields = stepElement.querySelectorAll('[required]');
+            let isValid = true;
+            
+            requiredFields.forEach(field => {
+                if (!field.value.trim()) {
+                    field.style.borderColor = '#E07A5F';
+                    isValid = false;
+                } else {
+                    field.style.borderColor = '#A8B5A0';
+                }
+            });
+            
+            if (!isValid) {
+                showNotification('Please fill in all required fields', 'error');
+            }
+            
+            return isValid;
+        }
+        
+        function initForm() {
+            const form = document.getElementById('admission-form');
+            
+            form.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                if (!validateStep(3)) {
+                    return;
+                }
+                
+                // Collect form data
+                const formData = new FormData(form);
+                const data = Object.fromEntries(formData);
+                
+                // Store in localStorage for demo
+                localStorage.setItem('admissionApplication', JSON.stringify(data));
+                
+                // Show success message
+                showSuccessModal();
+            });
+        }
+        
+        function showSuccessModal() {
+            const modal = document.createElement('div');
+            modal.className = 'fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 p-4';
+            modal.innerHTML = `
+                <div class="bg-white rounded-2xl max-w-md w-full p-8 text-center">
+                    <div class="text-6xl mb-6">🎉</div>
+                    <h3 class="font-display text-3xl font-bold text-forest-green mb-4">Application Submitted!</h3>
+                    <p class="text-charcoal-gray leading-relaxed mb-8">
+                        Thank you for your interest in Ishwar International School. We have received your application and will contact you within 24 hours to schedule the next steps.
+                    </p>
+                    <div class="space-y-4">
+                        <p class="text-sm text-charcoal-gray">
+                            <strong>Application Reference:</strong><br>
+                            IIS-${Date.now().toString().slice(-6)}
+                        </p>
+                        <button class="btn-primary px-8 py-3 rounded-full font-semibold" onclick="this.closest('.fixed').remove()">
+                            Close
+                        </button>
+                    </div>
+                </div>
+            `;
+            
+            document.body.appendChild(modal);
+            
+            // Animate modal appearance
+            anime({
+                targets: modal.querySelector('.bg-white'),
+                scale: [0.8, 1],
+                opacity: [0, 1],
+                duration: 300,
+                easing: 'easeOutCubic'
+            });
+            
+            // Reset form
+            document.getElementById('admission-form').reset();
+            currentStep = 1;
+            document.querySelectorAll('.form-step').forEach(step => step.classList.remove('active'));
+            document.getElementById('step-1').classList.add('active');
+            document.querySelectorAll('.step-indicator').forEach(indicator => {
+                indicator.classList.remove('active', 'completed');
+            });
+            document.getElementById('step-1-indicator').classList.add('active');
+        }
+        
+        function initMap() {
+            // Initialize Leaflet map
+            const map = L.map('map').setView([28.6139, 77.2090], 15); // Delhi coordinates as example
+            
+            L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+                attribution: '© OpenStreetMap contributors'
+            }).addTo(map);
+            
+            // Add school marker
+            const schoolMarker = L.marker([28.6139, 77.2090]).addTo(map);
+            schoolMarker.bindPopup('<b>Ishwar International School</b><br>123 Education Street<br>Knowledge City');
+            
+            // Add nearby landmarks
+            const landmarks = [
+                { lat: 28.6145, lng: 77.2085, name: 'City Hospital', icon: '🏥' },
+                { lat: 28.6135, lng: 77.2095, name: 'Central Park', icon: '🌳' },
+                { lat: 28.6120, lng: 77.2100, name: 'Railway Station', icon: '🚆' }
+            ];
+            
+            landmarks.forEach(landmark => {
+                const marker = L.marker([landmark.lat, landmark.lng]).addTo(map);
+                marker.bindPopup(`<b>${landmark.icon} ${landmark.name}</b>`);
+            });
+        }
+        
+        function toggleFAQ(element) {
+            const answer = element.querySelector('.faq-answer');
+            const icon = element.querySelector('span');
+            
+            if (answer.classList.contains('open')) {
+                answer.classList.remove('open');
+                icon.textContent = '+';
+                icon.style.transform = 'rotate(0deg)';
+            } else {
+                // Close all other FAQs
+                document.querySelectorAll('.faq-answer.open').forEach(openAnswer => {
+                    openAnswer.classList.remove('open');
+                    const openIcon = openAnswer.parentElement.querySelector('span');
+                    openIcon.textContent = '+';
+                    openIcon.style.transform = 'rotate(0deg)';
+                });
+                
+                // Open current FAQ
+                answer.classList.add('open');
+                icon.textContent = '−';
+                icon.style.transform = 'rotate(180deg)';
+            }
+        }
+    </script>
+</body>
+</html>
