@@ -9,19 +9,24 @@ export const metadata = {
 export default function AcademicsPage() {
     // Verified images from public folder
     const facultyMembers = [
-        { name: "Ms. Suman", role: "TGT Maths", image: "/SUMAN.jpg" },
-        { name: "Ms. Manoj", role: "PRT Hindi", image: "/MANJOT.jpg" },
-        { name: "Ms. Meena", role: "PGT Hindi", image: "/MEENA.jpg" },
-        { name: "Ms. Priti", role: "Mother Teacher", image: "/PRITI.jpg" },
-        { name: "Mr. Ravinder Sharma", role: "TGT Sanskrit", image: "/RAVINDER.jpg" },
-        { name: "Mr. Shyam", role: "Music Teacher", image: "/SHYAM.jpg" },
-        { name: "Ms. Kamlesh", role: "PRT Hindi", image: "/KAMLESH.jpg" },
-        { name: "Ms. Bhawna", role: "PGT IP", image: "/BHWANA.jpeg" },
-        { name: "Bharti Grover", role: "PGT Commerce", image: "/BHARATI.jpeg" },
-        // Added more based on available files
-        { name: "Ms. Mamta", role: "Teacher", image: "/MAMTA.jpeg" },
-        { name: "Ms. Jyoti", role: "Teacher", image: "/JYOTI.jpeg" },
-        { name: "Ms. Nidhi", role: "Teacher", image: "/NIGHI.jpeg" }, // Typo in filename kept
+        { name: "Ms. Suman", role: "TGT Maths", image: "/teacher/SUMAN.jpg" },
+        { name: "Ms. Manjot", role: "PRT Hindi", image: "/teacher/MANJOT.jpg" },
+        { name: "Ms. Meena", role: "PGT Hindi", image: "/teacher/MEENA.jpg" },
+        { name: "Ms. Priti", role: "Mother Teacher", image: "/teacher/PRITI.jpg" },
+        { name: "Mr. Ravinder Sharma", role: "TGT Sanskrit", image: "/teacher/RAVINDER.jpg" },
+        { name: "Mr. Shyam", role: "Music Teacher", image: "/teacher/SHYAM.jpg" },
+        { name: "Ms. Kamlesh", role: "PRT Hindi", image: "/teacher/KAMLESH.jpg" },
+        { name: "Ms. Bhawna", role: "PGT IP", image: "/teacher/BHWANA.jpeg" },
+        { name: "Ms. Bharati Grover", role: "PGT Commerce", image: "/teacher/BHARATI.jpeg" },
+        { name: "Ms. Mamta", role: "Teacher", image: "/teacher/MAMTA.jpeg" },
+        { name: "Ms. Jyoti", role: "Teacher", image: "/teacher/JYOTI.jpeg" },
+        { name: "Ms. Nidhi", role: "Teacher", image: "/teacher/NIGHI.jpeg" },
+        { name: "Ms. Priyanka", role: "Teacher", image: "/teacher/PRIYUANKA.jpeg" },
+        { name: "Ms. Manju", role: "Teacher", image: "/teacher/MANJU.jpeg" },
+        { name: "Ms. Deepika", role: "Teacher", image: "/teacher/DEEIPKA.jpeg" },
+        { name: "Ms. Nisita", role: "Teacher", image: "/teacher/NISITA.jpeg" },
+        { name: "Mr. Lalit", role: "Teacher", image: "/teacher/LALIT.jpg" },
+        { name: "Mr. Rohit", role: "Teacher", image: "/teacher/ROHIT.jpeg" },
     ];
 
     return (

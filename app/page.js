@@ -5,6 +5,8 @@ import Image from 'next/image';
 import NoticeBoard from '@/components/NoticeBoard';
 import AdmissionBanner from '@/components/AdmissionBanner';
 import AcademicAchievers from '@/components/AcademicAchievers';
+import QuotesSection from '@/components/QuotesSection';
+import NoticeCorner from '@/components/NoticeCorner';
 
 export default function Home() {
   const textRef = useRef(null);
@@ -434,53 +436,11 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Parents' Voice Section */}
-      <section className="py-20 bg-white">
-        <div className="max-w-7xl mx-auto px-4">
-          <div className="text-center mb-12">
-            <h2 className="font-serif text-4xl md:text-5xl font-bold text-iis-maroon mb-2">Parents&apos; Voice</h2>
-            <div className="w-24 h-1 bg-iis-gold mx-auto"></div>
-          </div>
+      {/* Quotes Section */}
+      <QuotesSection />
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
-            <div className="bg-white p-8 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 relative overflow-hidden">
-              <div className="absolute top-0 left-0 text-6xl text-iis-gold/10 font-serif">&quot;</div>
-              <p className="text-slate-600 text-lg leading-relaxed mb-6 italic relative z-10">&quot;The focus on discipline and values at IIS is what differentiates it from other schools. My daughter has become much more confident.&quot;</p>
-              <div className="flex items-center gap-4 pt-4 border-t border-gray-200">
-                <div className="w-14 h-14 bg-gradient-to-br from-iis-maroon to-iis-gold rounded-full flex items-center justify-center font-bold text-white text-lg flex-shrink-0">SK</div>
-                <div>
-                  <h4 className="font-serif font-bold text-slate-800">Mr. Sunil Kumar</h4>
-                  <p className="text-sm text-iis-gold font-semibold">Parent of Class V Student</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-white p-8 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 relative overflow-hidden">
-              <div className="absolute top-0 left-0 text-6xl text-iis-gold/10 font-serif">&quot;</div>
-              <p className="text-slate-600 text-lg leading-relaxed mb-6 italic relative z-10">&quot;Excellent faculty and supportive environment. The teachers take personal care of every student&apos;s academic progress.&quot;</p>
-              <div className="flex items-center gap-4 pt-4 border-t border-gray-200">
-                <div className="w-14 h-14 bg-gradient-to-br from-iis-maroon to-iis-gold rounded-full flex items-center justify-center font-bold text-white text-lg flex-shrink-0">RP</div>
-                <div>
-                  <h4 className="font-serif font-bold text-slate-800">Mrs. Ritu Phal</h4>
-                  <p className="text-sm text-iis-gold font-semibold">Parent of Class X Student</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="bg-white p-8 rounded-lg shadow-md hover:shadow-xl transition-all duration-300 transform hover:-translate-y-2 relative overflow-hidden">
-              <div className="absolute top-0 left-0 text-6xl text-iis-gold/10 font-serif">&quot;</div>
-              <p className="text-slate-600 text-lg leading-relaxed mb-6 italic relative z-10">&quot;I am very happy with the sports facilities. My son won a district medal thanks to the coaching provided at school.&quot;</p>
-              <div className="flex items-center gap-4 pt-4 border-t border-gray-200">
-                <div className="w-14 h-14 bg-gradient-to-br from-iis-maroon to-iis-gold rounded-full flex items-center justify-center font-bold text-white text-lg flex-shrink-0">VS</div>
-                <div>
-                  <h4 className="font-serif font-bold text-slate-800">Mr. Vikram Singh</h4>
-                  <p className="text-sm text-iis-gold font-semibold">Parent of Class VIII Student</p>
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      </section>
+      {/* Notice Corner Widget */}
+      <NoticeCorner />
 
       {/* Stats Section */}
       <section className="py-16 bg-iis-cream">
