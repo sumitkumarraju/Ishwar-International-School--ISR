@@ -191,7 +191,7 @@ export default function Home() {
             <div className="flex flex-col md:flex-row gap-10 items-start">
               <div className="w-full md:w-1/3 bg-slate-100 p-6 rounded-lg text-center">
                 <div className="w-48 h-48 mx-auto bg-slate-300 rounded-full mb-6 relative overflow-hidden">
-                  <Image src="/DIRRECCTOR.jpeg" alt="Mr. Anil Malik" fill className="object-cover" sizes="(max-width: 768px) 100vw, 200px" />
+                  <Image src="/teacher/DIRRECCTOR.jpeg" alt="Mr. Anil Malik" fill className="object-cover" sizes="(max-width: 768px) 100vw, 200px" />
                 </div>
                 <h3 className="font-serif text-2xl font-bold text-iis-maroon">Mr. Anil Malik</h3>
                 <p className="text-iis-gold font-bold uppercase tracking-wide text-sm">Chairman</p>
@@ -210,7 +210,7 @@ export default function Home() {
             <div className="flex flex-col md:flex-row-reverse gap-10 items-start">
               <div className="w-full md:w-1/3 bg-slate-100 p-6 rounded-lg text-center">
                 <div className="w-48 h-56 mx-auto mb-4 overflow-hidden rounded-lg shadow-md relative">
-                  <Image src="/DIRECTOR WOMEN.jpeg" fill className="object-cover" alt="Mrs. Mukesh Malik" sizes="(max-width: 768px) 100vw, 200px" />
+                  <Image src="/teacher/DIRECTOR WOMEN.jpeg" fill className="object-cover" alt="Mrs. Mukesh Malik" sizes="(max-width: 768px) 100vw, 200px" />
                 </div>
                 <h3 className="font-serif text-2xl font-bold text-iis-maroon">Mrs. Mukesh Malik</h3>
                 <p className="text-iis-gold font-bold uppercase tracking-wide text-sm">Director</p>
@@ -232,7 +232,7 @@ export default function Home() {
             <div className="flex flex-col md:flex-row gap-10 items-start">
               <div className="w-full md:w-1/3 bg-slate-100 p-6 rounded-lg text-center">
                 <div className="w-48 h-48 mx-auto bg-slate-300 rounded-full mb-6 relative overflow-hidden">
-                  <Image src="/principla.jpg" alt="Mrs. Usha Kaushik" fill className="object-cover" sizes="(max-width: 768px) 100vw, 200px" />
+                  <Image src="/teacher/principla.jpg" alt="Mrs. Usha Kaushik" fill className="object-cover" sizes="(max-width: 768px) 100vw, 200px" />
                 </div>
                 <h3 className="font-serif text-2xl font-bold text-iis-maroon">Mrs. Usha Kaushik</h3>
                 <p className="text-iis-gold font-bold uppercase tracking-wide text-sm">Principal</p>

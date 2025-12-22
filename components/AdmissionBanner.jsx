@@ -15,7 +15,7 @@ export default function AdmissionBanner() {
 
     return (
         <div className="bg-iis-maroon text-white py-3 text-center px-4 relative overflow-hidden">
-            <div className="absolute top-0 left-0 w-full h-full bg-[url('/pattern.png')] opacity-10"></div>
+            <div className="absolute top-0 left-0 w-full h-full bg-white/5"></div>
             <div className="relative z-10 flex flex-col md:flex-row items-center justify-center gap-2 md:gap-6">
                 <span className="font-bold uppercase tracking-widest text-sm md:text-base text-yellow-300 animate-pulse">
                     <i className="fa-solid fa-bell mr-2"></i> Admissions Open for {status.sessionYear}

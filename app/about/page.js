@@ -103,7 +103,7 @@ export default function AboutPage() {
                                         <FacultyCard
                                             name="Mrs. Usha Kaushik"
                                             role="Principal"
-                                            image="/principla.jpg"
+                                            image="/teacher/principla.jpg"
                                             imageClassName="aspect-[3/4] object-cover h-auto"
                                         />
                                     </div>
@@ -148,7 +148,7 @@ export default function AboutPage() {
                                         <FacultyCard
                                             name="Mrs. Mukesh Malik"
                                             role="Director"
-                                            image="/DIRECTOR WOMEN.jpeg"
+                                            image="/teacher/DIRECTOR WOMEN.jpeg"
                                             imageClassName="aspect-[3/4] object-cover h-auto"
                                         />
                                     </div>
