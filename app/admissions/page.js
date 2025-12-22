@@ -49,6 +49,18 @@ export default function AdmissionsPage() {
             });
 
             if (!error) {
+                // Send Email Notification
+                try {
+                    await fetch('/api/send-admission-email', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(formData)
+                    });
+                } catch (emailError) {
+                    console.error("Failed to send email notification", emailError);
+                    // Don't block success message to user if email fails, but log it
+                }
+
                 alert("Application Submitted Successfully! Our admission counselor will call you shortly.");
                 setFormData({
                     firstName: '', lastName: '', dob: '', gender: '',
