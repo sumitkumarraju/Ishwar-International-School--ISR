@@ -18,8 +18,6 @@ export default function EnquiryForm() {
             message: e.target.message.value,
         };
 
-        console.log('Submitting enquiry:', formData);
-
         try {
             const { data, error } = await supabase
                 .from('enquiries')
@@ -29,22 +27,41 @@ export default function EnquiryForm() {
             if (error) {
                 console.error('Supabase error:', error);
                 setStatus('error');
-                alert("Failed to submit enquiry: " + error.message + "\nPlease contact admin if this persists.");
+                // Keep alert for errors as fallback, or use a toast if available. Use simple alert for error for now.
+                alert("Failed to submit enquiry: " + error.message);
                 return;
             }
 
-            console.log('Enquiry submitted successfully:', data);
             setStatus('success');
             e.target.reset();
-            alert("Thank you! Your enquiry has been submitted successfully. We will get back to you soon.");
 
         } catch (err) {
             console.error('Unexpected error:', err);
             setStatus('error');
-            alert("An unexpected error occurred. Please try again or contact us directly.");
+            alert("An unexpected error occurred. Please try again.");
         } finally {
             setLoading(false);
         }
+    }
+
+    if (status === 'success') {
+        return (
+            <div className="bg-white p-8 rounded-sm shadow-sm border border-gray-200 h-full flex flex-col items-center justify-center text-center animate-fade-in-up">
+                <div className="w-16 h-16 bg-green-100 rounded-full flex items-center justify-center mb-4">
+                    <i className="fa-solid fa-check text-3xl text-green-600"></i>
+                </div>
+                <h3 className="font-serif text-2xl font-bold text-slate-800 mb-2">Message Sent!</h3>
+                <p className="text-slate-600 mb-6">
+                    Thank you for contacting us. We have received your message and will respond shortly.
+                </p>
+                <button
+                    onClick={() => setStatus(null)}
+                    className="text-iis-maroon font-bold hover:text-red-900 transition-colors uppercase text-sm tracking-wider"
+                >
+                    Send Another Message
+                </button>
+            </div>
+        );
     }
 
     return (
@@ -82,8 +99,7 @@ export default function EnquiryForm() {
                     )}
                 </button>
 
-                {status === 'success' && <p className="text-green-600 text-sm font-bold text-center mt-2">Enquiry Sent Successfully!</p>}
-                {status === 'error' && <p className="text-red-600 text-sm font-bold text-center mt-2">Failed to send enquiry.</p>}
+                {status === 'error' && <p className="text-red-600 text-sm font-bold text-center mt-2">Failed to send enquiry. Please try again.</p>}
             </form>
         </div>
     );

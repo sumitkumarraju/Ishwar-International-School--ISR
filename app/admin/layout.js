@@ -35,8 +35,15 @@ export default function AdminLayout({ children }) {
                 return;
             }
 
-            const { data: { session } } = await supabase.auth.getSession();
-            if (!session) {
+            try {
+                const { data, error } = await supabase.auth.getSession();
+
+                if (error || !data?.session) {
+                    console.log("No active session or error:", error);
+                    router.push('/admin/login');
+                }
+            } catch (err) {
+                console.error("Auth check failed:", err);
                 router.push('/admin/login');
             }
             setLoading(false);

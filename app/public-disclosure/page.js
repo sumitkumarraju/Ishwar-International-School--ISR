@@ -12,21 +12,36 @@ export default function PublicDisclosurePage() {
     }, []);
 
     const fetchDocuments = async () => {
+        // Debug: Check if env vars are present (without logging secrets)
+        const sbUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+        const isPlaceholder = !sbUrl || sbUrl.includes('placeholder');
+
+        if (isPlaceholder) {
+            console.error('Supabase URL is missing or placeholder. Check deployment environment variables.');
+            setError('Configuration Error: Supabase URL is not set in this environment.');
+            setLoading(false);
+            return;
+        }
+
         try {
+            console.log("Fetching public disclosures...");
             const { data, error } = await supabase
                 .from('public_disclosures')
                 .select('*')
                 .order('uploaded_at', { ascending: false });
 
             if (error) {
-                console.error('Error fetching documents:', error);
+                console.error('Supabase error fetching documents:', error);
                 setError(error.message);
             } else {
+                console.log("Documents fetched:", data);
                 setDocuments(data || []);
             }
         } catch (err) {
-            console.error('Unexpected error:', err);
-            setError('Failed to load documents');
+            console.error('Unexpected fetch error:', err);
+            // Check if it's a network/fetch error
+            const message = err.message || 'Failed to connect to the database. Please check your internet connection.';
+            setError(message);
         } finally {
             setLoading(false);
         }
