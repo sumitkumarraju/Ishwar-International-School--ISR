@@ -218,34 +218,20 @@ export default function AboutPage() {
                     </div>
 
                     <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-                        {[
-                            { name: "Bharati", image: "/teacher/BHARATI.jpeg" },
-                            { name: "Bhawana", image: "/teacher/BHWANA.jpeg" },
-                            { name: "Deepika", image: "/teacher/DEEIPKA.jpeg" },
-                            { name: "Jyoti", image: "/teacher/JYOTI.jpeg" },
-                            { name: "Kamlesh", image: "/teacher/KAMLESH.jpg" },
-                            { name: "Lalit", image: "/teacher/LALIT.jpg" },
-                            { name: "Mamta", image: "/teacher/MAMTA.jpeg" },
-                            { name: "Manjot", image: "/teacher/MANJOT.jpg" },
-                            { name: "Manju", image: "/teacher/MANJU.jpeg" },
-                            { name: "Meena", image: "/teacher/MEENA.jpg" },
-                            { name: "Nidhi", image: "/teacher/NIGHI.jpeg" },
-                            { name: "Nisita", image: "/teacher/NISITA.jpeg" },
-                            { name: "Priti", image: "/teacher/PRITI.jpg" },
-                            { name: "Priyanka", image: "/teacher/PRIYUANKA.jpeg" },
-                            { name: "Ravinder", image: "/teacher/RAVINDER.jpg" },
-                            { name: "Rohit", image: "/teacher/ROHIT.jpeg" },
-                            { name: "Shyam", image: "/teacher/SHYAM.jpg" },
-                            { name: "Suman", image: "/teacher/SUMAN.jpg" },
-                        ].map((teacher, idx) => (
-                            <FacultyCard
-                                key={idx}
-                                name={teacher.name}
-                                role="Faculty Member"
-                                image={teacher.image}
-                                imageClassName="aspect-[3/4] object-cover h-64 w-full"
-                            />
-                        ))}
+                        {staff
+                            .filter(s => !s.designation?.toLowerCase().includes('principal') && !s.designation?.toLowerCase().includes('director'))
+                            .map((teacher, idx) => (
+                                <FacultyCard
+                                    key={teacher.id || idx}
+                                    name={teacher.name}
+                                    role={teacher.designation || "Faculty Member"}
+                                    image={teacher.image_url || "/teacher/teacher-placeholder.jpg"}
+                                    imageClassName="aspect-[3/4] object-cover h-64 w-full"
+                                />
+                            ))}
+                        {staff.filter(s => !s.designation?.toLowerCase().includes('principal') && !s.designation?.toLowerCase().includes('director')).length === 0 && (
+                            <p className="col-span-full text-center text-slate-500 italic">Faculty list is being updated...</p>
+                        )}
                     </div>
                 </div>
             </section>
