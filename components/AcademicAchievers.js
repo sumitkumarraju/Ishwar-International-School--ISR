@@ -87,33 +87,78 @@ const class10Stats = {
 export default function AcademicAchievers() {
     const [activeTab, setActiveTab] = useState('XII');
     const [achieversData, setAchieversData] = useState([]);
+    const [subjectToppersData, setSubjectToppersData] = useState([]);
+    const [subjectStatsData, setSubjectStatsData] = useState([]);
+    const [resultStatsData, setResultStatsData] = useState({ XII: null, X: null });
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        const fetchAchievers = async () => {
-            const { data } = await supabase
+        const fetchAllData = async () => {
+            // Fetch achievers
+            const { data: achievers } = await supabase
                 .from('achievers')
                 .select('*')
-                .order('score', { ascending: false }); // Assuming score is stored as number or sortable string
+                .order('score', { ascending: false });
+            if (achievers) setAchieversData(achievers);
 
-            if (data) setAchieversData(data);
+            // Fetch subject toppers
+            const { data: toppers } = await supabase
+                .from('subject_toppers')
+                .select('*')
+                .order('score', { ascending: false });
+            if (toppers) setSubjectToppersData(toppers);
+
+            // Fetch subject stats
+            const { data: stats } = await supabase
+                .from('subject_stats')
+                .select('*');
+            if (stats) setSubjectStatsData(stats);
+
+            // Fetch result stats
+            const { data: resultStats } = await supabase
+                .from('result_stats')
+                .select('*');
+            if (resultStats) {
+                const statsMap = { XII: null, X: null };
+                resultStats.forEach(r => {
+                    statsMap[r.student_class] = r;
+                });
+                setResultStatsData(statsMap);
+            }
+
             setLoading(false);
         };
-        fetchAchievers();
+        fetchAllData();
     }, []);
 
-    // Filter helpers
+    // Filter helpers - Get database data for selected class, or fallback to static data
     const getTopPerformers = (cls) => {
-        const data = achieversData.length > 0 ? achieversData : (cls === 'XII' ? class12TopPerformers : class10TopPerformers);
-        return data.filter(s => (s.category === 'TOPPER' || !s.category)).slice(0, 3);
+        // Filter database records by class
+        const dbData = achieversData.filter(s => s.student_class === cls && s.category === 'TOPPER');
+
+        // If we have database data for this class, use it
+        if (dbData.length > 0) {
+            return dbData.slice(0, 3);
+        }
+
+        // Otherwise fallback to static data for this class
+        return cls === 'XII' ? class12TopPerformers : class10TopPerformers;
     };
 
     const getOtherAchievers = (cls) => {
-        const data = achieversData.length > 0 ? achieversData : (cls === 'XII' ? class12OtherAchievers : class10OtherAchievers);
-        let list = data.filter(s => (s.category !== 'TOPPER'));
+        // Filter database records by class
+        const dbData = achieversData.filter(s => s.student_class === cls && s.category !== 'TOPPER');
 
-        // Fill up the blank space to ensure grid looks full (multiple of 3 or 4 visually)
-        // Simple heuristic: Ensure at least 12 items if possible or multiple of 3
+        let list;
+        // If we have database data for this class, use it
+        if (dbData.length > 0) {
+            list = [...dbData]; // Clone to avoid mutation
+        } else {
+            // Fallback to static data
+            list = cls === 'XII' ? [...class12OtherAchievers] : [...class10OtherAchievers];
+        }
+
+        // Fill up the blank space to ensure grid looks full (multiple of 3)
         if (list.length > 0 && list.length % 3 !== 0) {
             const missing = 3 - (list.length % 3);
             for (let i = 0; i < missing; i++) {
@@ -126,8 +171,38 @@ export default function AcademicAchievers() {
     const topPerformers = activeTab === 'XII' ? getTopPerformers('XII') : getTopPerformers('X');
     const otherAchievers = activeTab === 'XII' ? getOtherAchievers('XII') : getOtherAchievers('X');
 
-    // Fallback to static stats if dynamic calculation is too complex for now
-    const stats = activeTab === 'XII' ? class12Stats : class10Stats;
+    // Get stats from database or fallback to static
+    const getStats = (cls) => {
+        if (resultStatsData[cls]) {
+            return {
+                passResult: resultStatsData[cls].pass_result,
+                distinctions: resultStatsData[cls].distinctions,
+                highlights: resultStatsData[cls].stream_highlights || []
+            };
+        }
+        return cls === 'XII' ? class12Stats : class10Stats;
+    };
+    const stats = getStats(activeTab);
+
+    // Get subject toppers from database or fallback to static (Class XII)
+    const getSubjectToppers = () => {
+        const dbToppers = subjectToppersData.filter(s => s.student_class === 'XII');
+        if (dbToppers.length > 0) {
+            return dbToppers.map(s => ({ subject: s.subject, score: s.score, student: s.student_name }));
+        }
+        return class12SubjectToppers;
+    };
+    const subjectToppers = getSubjectToppers();
+
+    // Get subject stats from database or fallback to static (Class X)
+    const getSubjectStats = () => {
+        const dbStats = subjectStatsData.filter(s => s.student_class === 'X');
+        if (dbStats.length > 0) {
+            return dbStats.map(s => ({ subject: s.subject, merit: s.merit_count, highest: s.highest_score }));
+        }
+        return class10SubjectStats;
+    };
+    const subjectStats = getSubjectStats();
 
     return (
         <section className="py-20 bg-gradient-to-br from-indigo-50 via-white to-pink-50 scroll-mt-20" id="achievers">
@@ -181,10 +256,10 @@ export default function AcademicAchievers() {
                                         Rank #{idx + 1}
                                     </div>
                                     <div className="w-40 h-40 mx-auto rounded-full border-4 border-yellow-100 overflow-hidden mb-4 shadow-inner group-hover:scale-105 transition-transform duration-500">
-                                        <img src={student.img} alt={student.name} className="w-full h-full object-cover" />
+                                        <img src={student.img || student.image_url} alt={student.name} className="w-full h-full object-cover" />
                                     </div>
                                     <h4 className="font-serif text-2xl font-bold text-slate-800 mb-1">{student.name}</h4>
-                                    <div className="text-4xl font-black text-iis-maroon">{student.percentage}%</div>
+                                    <div className="text-4xl font-black text-iis-maroon">{student.percentage || student.score}%</div>
                                 </div>
                             ))}
                         </div>
@@ -202,9 +277,9 @@ export default function AcademicAchievers() {
                                 {otherAchievers.map((student, idx) => (
                                     <div key={idx} className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow">
                                         <div className="aspect-square bg-gray-100 overflow-hidden relative">
-                                            <img src={student.img} alt={student.name} className="w-full h-full object-cover" />
+                                            <img src={student.img || student.image_url} alt={student.name} className="w-full h-full object-cover" />
                                             <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent p-2 text-center text-white">
-                                                <span className="font-bold text-lg">{student.percentage}%</span>
+                                                <span className="font-bold text-lg">{student.percentage || student.score}%</span>
                                             </div>
                                         </div>
                                         <div className="p-3 text-center bg-white">
@@ -246,7 +321,7 @@ export default function AcademicAchievers() {
                                 <div className="bg-white border-l-4 border-iis-gold shadow-md rounded-r-xl p-6">
                                     <h4 className="font-serif text-xl font-bold text-slate-800 mb-4">Subject Toppers</h4>
                                     <div className="space-y-3">
-                                        {class12SubjectToppers.map((sub, idx) => (
+                                        {subjectToppers.map((sub, idx) => (
                                             <div key={idx} className="flex justify-between items-center text-sm border-b border-gray-100 last:border-0 pb-2 last:pb-0">
                                                 <div>
                                                     <span className="font-bold text-slate-700">{sub.subject}</span>
@@ -269,7 +344,7 @@ export default function AcademicAchievers() {
                                             <span className="text-center">Merits</span>
                                             <span className="text-right">Highest</span>
                                         </div>
-                                        {class10SubjectStats.map((sub, idx) => (
+                                        {subjectStats.map((sub, idx) => (
                                             <div key={idx} className="grid grid-cols-3 items-center text-sm py-2 border-b border-gray-50 last:border-0">
                                                 <div className="font-bold text-slate-700">{sub.subject}</div>
                                                 <div className="text-center text-slate-600 font-medium">{sub.merit}</div>
