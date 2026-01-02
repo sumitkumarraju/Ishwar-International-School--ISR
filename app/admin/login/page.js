@@ -1,6 +1,5 @@
 'use client';
 import { useState } from 'react';
-import { supabase } from '@/lib/supabaseClient';
 import { useRouter } from 'next/navigation';
 
 export default function AdminLogin() {
@@ -16,14 +15,19 @@ export default function AdminLogin() {
         setError('');
 
         try {
-            const { data, error } = await supabase.auth.signInWithPassword({
-                email,
-                password,
+            const res = await fetch('/api/admin/login', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password }),
             });
 
-            if (error) throw error;
+            const data = await res.json();
 
-            if (data.session) {
+            if (!res.ok) {
+                throw new Error(data.error || 'Invalid login credentials');
+            }
+
+            if (data.success) {
                 router.push('/admin/dashboard');
             }
         } catch (error) {

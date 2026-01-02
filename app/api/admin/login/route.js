@@ -1,53 +1,62 @@
 import { NextResponse } from "next/server";
-import bcrypt from "bcryptjs";
-import jwt from "jsonwebtoken";
-import Admin from "@/models/Admin";
-import dbConnect from "@/lib/mongodb";
+import { createServerClient } from "@supabase/ssr";
 
 export async function POST(req) {
-    try {
-        await dbConnect();
-        const { email, password } = await req.json();
+    const { email, password } = await req.json();
 
-        const admin = await Admin.findOne({ email });
-        if (!admin) {
-            return NextResponse.json(
-                { message: "Invalid credentials" },
-                { status: 401 }
-            );
+    const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL;
+    const supabaseKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY;
+
+    // Create response
+    let response = NextResponse.json({ success: false });
+
+    const supabase = createServerClient(
+        supabaseUrl,
+        supabaseKey,
+        {
+            cookies: {
+                getAll() {
+                    return req.cookies.getAll();
+                },
+                setAll(cookiesToSet) {
+                    cookiesToSet.forEach(({ name, value, options }) => {
+                        // Remove maxAge to make it a session cookie
+                        const sessionOptions = { ...options };
+                        delete sessionOptions.maxAge;
+                        delete sessionOptions.expires;
+                        response.cookies.set(name, value, sessionOptions);
+                    });
+                },
+            },
         }
+    );
 
-        const isMatch = await bcrypt.compare(password, admin.password);
-        if (!isMatch) {
-            return NextResponse.json(
-                { message: "Invalid credentials" },
-                { status: 401 }
-            );
-        }
+    // Attempt login
+    const { data, error } = await supabase.auth.signInWithPassword({
+        email,
+        password,
+    });
 
-        const token = jwt.sign(
-            { id: admin._id, role: admin.role },
-            process.env.JWT_SECRET,
-            { expiresIn: "1d" }
-        );
+    if (error) {
+        return NextResponse.json({ success: false, error: error.message }, { status: 401 });
+    }
 
-        const response = NextResponse.json({ token, success: true });
+    if (data.session) {
+        response = NextResponse.json({ success: true });
 
-        // Set HTTP-Only Cookie
-        response.cookies.set('admin-token', token, {
+        // Set session cookies without maxAge (session cookie - dies on browser close)
+        const cookieOptions = {
             httpOnly: true,
             secure: process.env.NODE_ENV === 'production',
-            sameSite: 'strict',
-            maxAge: 60 * 60 * 24, // 1 day
-            path: '/',
-        });
+            sameSite: 'lax',
+            path: '/'
+            // NO maxAge or expires = session cookie
+        };
 
-        return response;
-    } catch (error) {
-        console.error("Login Check Error:", error);
-        return NextResponse.json(
-            { message: "Login failed" },
-            { status: 500 }
-        );
+        response.cookies.set('admin_session', 'authenticated', cookieOptions);
+        response.cookies.set('sb-access-token', data.session.access_token, cookieOptions);
+        response.cookies.set('sb-refresh-token', data.session.refresh_token, cookieOptions);
     }
+
+    return response;
 }

@@ -46,21 +46,32 @@ export default function AdmissionsPage() {
 
     const updateStatus = async (id, newStatus) => {
         try {
-            const { error } = await supabase
+            console.log('Attempting to update status:', { id, newStatus });
+
+            const { data, error } = await supabase
                 .from('admissions')
                 .update({ status: newStatus })
-                .eq('id', id);
+                .eq('id', id)
+                .select();
 
             if (error) {
-                console.error('Status update error:', error);
+                console.error('Status update error:', {
+                    message: error.message,
+                    details: error.details,
+                    hint: error.hint,
+                    code: error.code,
+                    fullError: error
+                });
                 throw error;
             }
 
+            console.log('Update successful:', data);
             setApplications(applications.map(app => app.id === id ? { ...app, status: newStatus } : app));
             if (selectedApp) setSelectedApp({ ...selectedApp, status: newStatus });
         } catch (error) {
             console.error('Full error:', error);
-            alert('Status update failed: ' + (error.message || 'Unknown error'));
+            const errorMsg = error.message || error.hint || error.details || 'Unknown error';
+            alert('Status update failed: ' + errorMsg);
         }
     };
 

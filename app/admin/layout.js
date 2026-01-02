@@ -2,7 +2,6 @@
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter, usePathname } from 'next/navigation';
-import { supabase } from '@/lib/supabaseClient';
 import {
     LayoutDashboard,
     GraduationCap,
@@ -29,30 +28,31 @@ export default function AdminLayout({ children }) {
     const [sidebarOpen, setSidebarOpen] = useState(false);
 
     useEffect(() => {
-        const checkAuth = async () => {
-            if (pathname === '/admin/login') {
-                setLoading(false);
-                return;
-            }
-
-            try {
-                const { data, error } = await supabase.auth.getSession();
-
-                if (error || !data?.session) {
-                    console.log("No active session or error:", error);
-                    router.push('/admin/login');
-                }
-            } catch (err) {
-                console.error("Auth check failed:", err);
-                router.push('/admin/login');
-            }
+        // Middleware handles auth protection, just show content
+        if (pathname === '/admin/login') {
             setLoading(false);
-        };
-        checkAuth();
+            return;
+        }
+        setLoading(false);
     }, [pathname, router]);
 
+    // Auto-logout when tab/browser is closed
+    useEffect(() => {
+        if (pathname === '/admin/login') return;
+
+        const logoutOnClose = () => {
+            navigator.sendBeacon('/api/admin/logout');
+        };
+
+        window.addEventListener('beforeunload', logoutOnClose);
+
+        return () => {
+            window.removeEventListener('beforeunload', logoutOnClose);
+        };
+    }, [pathname]);
+
     const handleSignOut = async () => {
-        await supabase.auth.signOut();
+        await fetch('/api/admin/logout', { method: 'POST' });
         router.push('/admin/login');
     };
 
