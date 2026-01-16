@@ -59,6 +59,7 @@ export default function AdminLayout({ children }) {
     const menuItems = [
         { name: 'Dashboard', icon: <LayoutDashboard size={20} />, path: '/admin/dashboard' },
         { name: 'Admissions', icon: <GraduationCap size={20} />, path: '/admin/admissions' },
+        { name: 'Alumni', icon: <Users size={20} />, path: '/admin/alumni' },
         { name: 'Inquiries', icon: <Mail size={20} />, path: '/admin/inquiries' },
         { name: 'Notices', icon: <Megaphone size={20} />, path: '/admin/notices' },
         { name: 'Achievers', icon: <Trophy size={20} />, path: '/admin/achievers' },

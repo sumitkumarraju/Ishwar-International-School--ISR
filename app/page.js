@@ -8,6 +8,7 @@ import AdmissionBanner from '@/components/AdmissionBanner';
 import AcademicAchievers from '@/components/AcademicAchievers';
 import QuotesSection from '@/components/QuotesSection';
 import NoticeCorner from '@/components/NoticeCorner';
+import Alumni from '@/components/Alumni';
 
 export default function Home() {
   const textRef = useRef(null);
@@ -98,6 +99,8 @@ export default function Home() {
       <NoticeBoard />
 
       <AcademicAchievers />
+
+      <Alumni />
 
       {/* About Section */}
       <section className="py-20 bg-white">
