@@ -47,7 +47,11 @@ export default function GalleryManager() {
             // 1. Upload File
             const { error: uploadError } = await supabase.storage
                 .from('gallery')
-                .upload(filePath, file);
+                .upload(filePath, file, {
+                    contentType: file.type,
+                    cacheControl: '3600',
+                    upsert: false
+                });
 
             if (uploadError) throw uploadError;
 

@@ -13,13 +13,13 @@ export const dynamic = 'force-dynamic';
 
 async function getDbImages() {
     try {
-        const supabase = supabaseServer();
-        const { data } = await supabase
+        const { data } = await supabaseServer
             .from('gallery')
             .select('*')
             .order('created_at', { ascending: false });
         return data || [];
     } catch (e) {
+        console.error('Gallery fetch error:', e);
         return [];
     }
 }
