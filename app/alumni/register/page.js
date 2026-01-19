@@ -1,31 +1,86 @@
 'use client';
 import { useState } from 'react';
-import { User, Mail, Briefcase, Linkedin, Calendar, GraduationCap } from 'lucide-react';
+import { User, Mail, Briefcase, Linkedin, Calendar, GraduationCap, Upload, CheckCircle } from 'lucide-react';
+import { supabase } from '@/lib/supabaseClient';
 
 export default function AlumniRegister() {
     const [formData, setFormData] = useState({
         name: '', email: '', batch: '', currentRole: '', company: '', linkedin: '', quote: ''
     });
+    const [imageFile, setImageFile] = useState(null);
+    const [imagePreview, setImagePreview] = useState(null);
     const [status, setStatus] = useState('idle'); // idle, loading, success, error
+
+    const handleImageChange = (e) => {
+        if (e.target.files && e.target.files[0]) {
+            const file = e.target.files[0];
+
+            // Validate file type
+            if (!file.type.startsWith('image/')) {
+                alert('Please select a valid image file (JPG, PNG, or WebP)');
+                return;
+            }
+
+            // Validate file size (max 5MB)
+            if (file.size > 5 * 1024 * 1024) {
+                alert('Image size should be less than 5MB');
+                return;
+            }
+
+            setImageFile(file);
+            setImagePreview(URL.createObjectURL(file));
+        }
+    };
 
     const handleSubmit = async (e) => {
         e.preventDefault();
         setStatus('loading');
 
         try {
+            let imageUrl = '';
+
+            // Upload image if provided
+            if (imageFile) {
+                const fileExt = imageFile.name.split('.').pop();
+                const fileName = `${Date.now()}.${fileExt}`;
+                const filePath = `alumni/${fileName}`;
+
+                const { error: uploadError } = await supabase.storage
+                    .from('alumni-images')
+                    .upload(filePath, imageFile, {
+                        contentType: imageFile.type,
+                        cacheControl: '3600',
+                        upsert: false
+                    });
+
+                if (uploadError) {
+                    console.error('Upload error:', uploadError);
+                    throw new Error('Failed to upload image');
+                }
+
+                const { data } = supabase.storage
+                    .from('alumni-images')
+                    .getPublicUrl(filePath);
+
+                imageUrl = data.publicUrl;
+            }
+
             const res = await fetch('/api/alumni', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData)
+                body: JSON.stringify({ ...formData, image: imageUrl })
             });
 
             if (res.ok) {
                 setStatus('success');
                 setFormData({ name: '', email: '', batch: '', currentRole: '', company: '', linkedin: '', quote: '' });
+                setImageFile(null);
+                setImagePreview(null);
             } else {
                 setStatus('error');
             }
         } catch (err) {
+            console.error('Submit error:', err);
             setStatus('error');
         }
     };
@@ -120,6 +175,45 @@ export default function AlumniRegister() {
                         <textarea placeholder="My favorite memory was the annual sports meet..." rows={3}
                             className="w-full p-3 border rounded-lg focus:border-iis-maroon outline-none"
                             value={formData.quote} onChange={e => setFormData({ ...formData, quote: e.target.value })} />
+                    </div>
+
+                    {/* Profile Photo Upload */}
+                    <div>
+                        <label className="block text-sm font-bold text-slate-700 mb-2">Profile Photo (Optional)</label>
+                        <div className="border-2 border-dashed border-slate-300 rounded-lg p-6 text-center hover:border-iis-maroon transition-colors cursor-pointer relative">
+                            <input
+                                type="file"
+                                accept=".jpg,.jpeg,.png,.webp"
+                                onChange={handleImageChange}
+                                className="absolute inset-0 w-full h-full opacity-0 cursor-pointer"
+                            />
+                            {imagePreview ? (
+                                <div className="space-y-3">
+                                    <img
+                                        src={imagePreview}
+                                        alt="Preview"
+                                        className="w-24 h-24 object-cover rounded-full mx-auto border-4 border-green-500"
+                                    />
+                                    <div className="flex items-center justify-center gap-2 text-green-600">
+                                        <CheckCircle size={16} />
+                                        <span className="text-sm font-medium">{imageFile?.name}</span>
+                                    </div>
+                                    <button
+                                        type="button"
+                                        onClick={(e) => { e.stopPropagation(); setImageFile(null); setImagePreview(null); }}
+                                        className="text-xs text-red-500 hover:underline"
+                                    >
+                                        Remove Photo
+                                    </button>
+                                </div>
+                            ) : (
+                                <div className="text-slate-500 flex flex-col items-center">
+                                    <Upload size={32} className="mb-2 text-slate-400" />
+                                    <span className="font-medium">Click to upload your photo</span>
+                                    <span className="text-xs text-slate-400 mt-1">JPG, PNG, WebP up to 5MB</span>
+                                </div>
+                            )}
+                        </div>
                     </div>
 
                     <button disabled={status === 'loading'} type="submit" className="w-full bg-iis-gold text-iis-navy font-bold py-4 rounded-lg hover:bg-yellow-600 transition shadow-lg">
