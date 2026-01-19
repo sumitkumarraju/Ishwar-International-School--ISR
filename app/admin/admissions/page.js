@@ -181,7 +181,7 @@ export default function AdmissionsPage() {
                         <div className="p-6 border-b flex justify-between items-center bg-slate-50">
                             <div>
                                 <h3 className="text-xl font-serif font-bold text-iis-navy">Application Details</h3>
-                                <p className="text-xs text-slate-500 uppercase tracking-widest">ID: {selectedApp.id.substring(0, 8)}</p>
+                                <p className="text-xs text-slate-500 uppercase tracking-widest">ID: {String(selectedApp.id).substring(0, 8)}</p>
                             </div>
                             <button onClick={() => setSelectedApp(null)} className="text-slate-400 hover:text-slate-600 text-2xl">&times;</button>
                         </div>
