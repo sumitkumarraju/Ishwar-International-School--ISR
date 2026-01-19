@@ -1,10 +1,10 @@
 import { NextResponse } from 'next/server';
-import { supabase } from '@/lib/supabaseClient';
+import { supabaseServer } from '@/lib/supabaseServer';
 
 // GET: Fetch ALL Alumni (including unapproved) for admin
 export async function GET(req) {
     try {
-        const { data, error } = await supabase
+        const { data, error } = await supabaseServer
             .from('alumni')
             .select('*')
             .order('created_at', { ascending: false });
@@ -26,7 +26,7 @@ export async function PATCH(req) {
     try {
         const { id, isApproved } = await req.json();
 
-        const { data, error } = await supabase
+        const { data, error } = await supabaseServer
             .from('alumni')
             .update({ is_approved: isApproved })
             .eq('id', id)
@@ -51,7 +51,7 @@ export async function DELETE(req) {
         const { searchParams } = new URL(req.url);
         const id = searchParams.get('id');
 
-        const { error } = await supabase
+        const { error } = await supabaseServer
             .from('alumni')
             .delete()
             .eq('id', id);

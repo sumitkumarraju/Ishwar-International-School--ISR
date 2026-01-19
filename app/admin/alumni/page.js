@@ -19,18 +19,53 @@ export default function AdminAlumni() {
     };
 
     const handleApproval = async (id, status) => {
-        await fetch('/api/admin/alumni', {
-            method: 'PATCH',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ id, isApproved: status })
-        });
-        fetchAlumni();
+        try {
+            console.log('Approving alumni:', id, status);
+            const res = await fetch('/api/admin/alumni', {
+                method: 'PATCH',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ id, isApproved: status })
+            });
+
+            if (!res.ok) {
+                const error = await res.json();
+                console.error('Approval failed:', error);
+                alert('Failed to update alumni status');
+                return;
+            }
+
+            console.log('Alumni approved successfully');
+            fetchAlumni();
+        } catch (error) {
+            console.error('Approval error:', error);
+            alert('An error occurred while updating alumni status');
+        }
     };
 
     const handleDelete = async (id) => {
-        if (!confirm('Are you sure you want to delete this alumni record?')) return;
-        await fetch(`/api/admin/alumni?id=${id}`, { method: 'DELETE' });
-        fetchAlumni();
+        console.log('Delete clicked for:', id);
+        if (!window.confirm('Are you sure you want to delete this alumni record?')) {
+            console.log('Delete cancelled by user');
+            return;
+        }
+
+        try {
+            console.log('Deleting alumni:', id);
+            const res = await fetch(`/api/admin/alumni?id=${id}`, { method: 'DELETE' });
+
+            if (!res.ok) {
+                const error = await res.json();
+                console.error('Delete failed:', error);
+                alert('Failed to delete alumni');
+                return;
+            }
+
+            console.log('Alumni deleted successfully');
+            fetchAlumni();
+        } catch (error) {
+            console.error('Delete error:', error);
+            alert('An error occurred while deleting alumni');
+        }
     };
 
     const filteredAlumni = alumni.filter(a => {

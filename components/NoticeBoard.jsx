@@ -7,23 +7,32 @@ export default function NoticeBoard() {
 
     useEffect(() => {
         const fetchNotices = async () => {
-            const { data } = await supabase
-                .from('notices')
-                .select('*')
-                .eq('active', true)
-                .order('created_at', { ascending: false })
-                .limit(6);
+            try {
+                const { data, error } = await supabase
+                    .from('notices')
+                    .select('*')
+                    .eq('active', true)
+                    .order('created_at', { ascending: false })
+                    .limit(6);
 
-            if (data) {
-                const enhancedNotices = data.map(notice => {
-                    const daysOld = Math.floor((Date.now() - new Date(notice.created_at).getTime()) / (1000 * 60 * 60 * 24));
-                    return {
-                        ...notice,
-                        isNew: daysOld <= 3,
-                        category: categorizeNotice(notice.title),
-                    };
-                });
-                setNotices(enhancedNotices);
+                if (error) {
+                    console.error('Supabase notices error:', error);
+                    return;
+                }
+
+                if (data) {
+                    const enhancedNotices = data.map(notice => {
+                        const daysOld = Math.floor((Date.now() - new Date(notice.created_at).getTime()) / (1000 * 60 * 60 * 24));
+                        return {
+                            ...notice,
+                            isNew: daysOld <= 3,
+                            category: categorizeNotice(notice.title),
+                        };
+                    });
+                    setNotices(enhancedNotices);
+                }
+            } catch (err) {
+                console.error('Failed to fetch notices:', err);
             }
         };
         fetchNotices();
