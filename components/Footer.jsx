@@ -28,7 +28,13 @@ export default function Footer() {
                 </div>
             </div>
             <div className="border-t border-slate-700 pt-8 text-center text-xs text-slate-500">
-                &copy; 2025 ईshwar International School. All Rights Reserved.
+                <p>&copy; 2025 ईshwar International School. All Rights Reserved.</p>
+                <p className="mt-2 text-slate-600 flex items-center justify-center gap-2">
+                    Developed & Maintained by <span className="text-iis-gold font-medium">Sumit Kumar</span>
+                    <a href="mailto:sumitts17@gmail.com" title="Contact Developer" className="text-slate-400 hover:text-iis-gold transition-colors">
+                        <i className="fa-solid fa-envelope"></i>
+                    </a>
+                </p>
             </div>
         </footer>
     );
