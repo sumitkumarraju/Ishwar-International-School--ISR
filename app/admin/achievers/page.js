@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabaseClient';
 import { Trophy, Plus, BookOpen, BarChart3, X } from 'lucide-react';
+import Image from 'next/image';
 
 export default function AchieversManager() {
     const [activeSection, setActiveSection] = useState('achievers');
@@ -255,7 +256,13 @@ export default function AchieversManager() {
                                         <div className="absolute top-3 left-3 bg-iis-gold text-iis-navy text-xs font-black px-2 py-1 rounded-full z-20">RANK #{idx + 1}</div>
                                         <div className="h-48 bg-gray-100 flex items-center justify-center relative overflow-hidden">
                                             {student.image_url ? (
-                                                <img src={student.image_url} alt={student.name} className="w-full h-full object-cover" />
+                                                <Image
+                                                    src={student.image_url}
+                                                    alt={student.name}
+                                                    fill
+                                                    className="object-cover"
+                                                    sizes="(max-width: 768px) 100vw, 33vw"
+                                                />
                                             ) : (
                                                 <span className="text-6xl text-gray-300">👤</span>
                                             )}
@@ -281,7 +288,13 @@ export default function AchieversManager() {
                                     <div key={student.id} className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden">
                                         <div className="h-40 bg-gray-100 flex items-center justify-center relative overflow-hidden">
                                             {student.image_url ? (
-                                                <img src={student.image_url} alt={student.name} className="w-full h-full object-cover" />
+                                                <Image
+                                                    src={student.image_url}
+                                                    alt={student.name}
+                                                    fill
+                                                    className="object-cover"
+                                                    sizes="(max-width: 768px) 100vw, 25vw"
+                                                />
                                             ) : (
                                                 <span className="text-5xl text-gray-300">👤</span>
                                             )}
@@ -301,7 +314,7 @@ export default function AchieversManager() {
                     {achievers.length === 0 && !loading && (
                         <div className="text-center py-12 text-slate-400">
                             <Trophy className="mx-auto mb-4 opacity-20" size={64} />
-                            <p>No achievers added yet. Click "Add Achiever" to start!</p>
+                            <p>No achievers added yet. Click &quot;Add Achiever&quot; to start!</p>
                         </div>
                     )}
                 </div>

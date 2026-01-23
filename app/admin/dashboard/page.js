@@ -13,31 +13,30 @@ export default function Dashboard() {
     });
 
     useEffect(() => {
+        const fetchStats = async () => {
+            const [admissions, notices, gallery, achievers] = await Promise.all([
+                supabase.from('admissions').select('id', { count: 'exact', head: true }),
+                supabase.from('notices').select('id', { count: 'exact', head: true }).eq('active', true),
+                supabase.from('gallery').select('id', { count: 'exact', head: true }),
+                supabase.from('achievers').select('id', { count: 'exact', head: true })
+            ]);
+
+            setStats({
+                admissions: admissions.count || 0,
+                notices: notices.count || 0,
+                galleryImages: gallery.count || 0,
+                achievers: achievers.count || 0
+            });
+        };
         fetchStats();
     }, []);
-
-    const fetchStats = async () => {
-        const [admissions, notices, gallery, achievers] = await Promise.all([
-            supabase.from('admissions').select('id', { count: 'exact', head: true }),
-            supabase.from('notices').select('id', { count: 'exact', head: true }).eq('active', true),
-            supabase.from('gallery').select('id', { count: 'exact', head: true }),
-            supabase.from('achievers').select('id', { count: 'exact', head: true })
-        ]);
-
-        setStats({
-            admissions: admissions.count || 0,
-            notices: notices.count || 0,
-            galleryImages: gallery.count || 0,
-            achievers: achievers.count || 0
-        });
-    };
 
     return (
         <div className="space-y-8">
             {/* Page Title */}
             <div>
                 <h1 className="text-2xl font-bold text-slate-900">Dashboard Overview</h1>
-                <p className="text-slate-500">Welcome back! Here's what's happening at school today.</p>
+                <p className="text-slate-500">Welcome back! Here&apos;s what&apos;s happening at school today.</p>
             </div>
 
             {/* Stats Grid */}

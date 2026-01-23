@@ -1,6 +1,7 @@
 "use client";
 import { useState, useEffect } from 'react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function Navbar() {
     const [isScrolled, setIsScrolled] = useState(false);
@@ -77,12 +78,15 @@ export default function Navbar() {
                     <div className="flex justify-between items-center">
                         <div className="flex-shrink-0 flex items-center">
                             <Link href="/" className="flex items-center group hover:opacity-90 transition-opacity">
-                                <img
-                                    src="/me.jpg"
-                                    alt="Ishwar International School"
-                                    className={`object-contain transition-all duration-500 ${isScrolled ? 'h-12' : 'h-16'}`}
-                                    id="navbar-logo"
-                                />
+                                <div className={`relative transition-all duration-500 ${isScrolled ? 'h-12 w-12' : 'h-16 w-16'}`}>
+                                    <Image
+                                        src="/me.jpg"
+                                        alt="Ishwar International School"
+                                        fill
+                                        className="object-contain"
+                                        id="navbar-logo"
+                                    />
+                                </div>
                             </Link>
                         </div>
 

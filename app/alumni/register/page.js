@@ -2,6 +2,7 @@
 import { useState } from 'react';
 import { User, Mail, Briefcase, Linkedin, Calendar, GraduationCap, Upload, CheckCircle } from 'lucide-react';
 import { supabase } from '@/lib/supabaseClient';
+import Image from 'next/image';
 
 export default function AlumniRegister() {
     const [formData, setFormData] = useState({
@@ -189,9 +190,11 @@ export default function AlumniRegister() {
                             />
                             {imagePreview ? (
                                 <div className="space-y-3">
-                                    <img
+                                    <Image
                                         src={imagePreview}
                                         alt="Preview"
+                                        width={96}
+                                        height={96}
                                         className="w-24 h-24 object-cover rounded-full mx-auto border-4 border-green-500"
                                     />
                                     <div className="flex items-center justify-center gap-2 text-green-600">

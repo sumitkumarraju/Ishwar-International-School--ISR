@@ -1,5 +1,6 @@
 'use client';
 import { useState } from 'react';
+import Image from 'next/image';
 
 export default function ClientGallery({ initialImages }) {
     const [selectedCategory, setSelectedCategory] = useState('All');
@@ -49,9 +50,13 @@ export default function ClientGallery({ initialImages }) {
                             className="break-inside-avoid relative group rounded-lg overflow-hidden shadow-md bg-gray-100 cursor-pointer"
                             onClick={() => setLightboxImage(img.src)}
                         >
-                            <img
+                            <Image
                                 src={img.src}
                                 alt={img.title || 'Gallery Image'}
+                                width={0}
+                                height={0}
+                                sizes="100vw"
+                                style={{ width: '100%', height: 'auto' }}
                                 loading="lazy"
                                 className="w-full h-auto object-cover transition-transform duration-700 group-hover:scale-110"
                             />
@@ -82,12 +87,15 @@ export default function ClientGallery({ initialImages }) {
                     onClick={() => setLightboxImage(null)}
                 >
                     <button className="absolute top-4 right-4 text-white text-4xl hover:text-gray-300">&times;</button>
-                    <img
-                        src={lightboxImage}
-                        alt="Full View"
-                        className="max-w-full max-h-[90vh] object-contain rounded shadow-2xl animate-fade-in"
-                        onClick={(e) => e.stopPropagation()}
-                    />
+                    <div className="relative max-w-full max-h-[90vh] w-full h-full">
+                         <Image
+                            src={lightboxImage}
+                            alt="Full View"
+                            fill
+                            className="object-contain"
+                            onClick={(e) => e.stopPropagation()}
+                        />
+                    </div>
                 </div>
             )}
         </div>

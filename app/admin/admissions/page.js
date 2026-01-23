@@ -209,7 +209,7 @@ export default function AdmissionsPage() {
 
                             <div className="grid grid-cols-2 gap-8">
                                 <div>
-                                    <h4 className="text-xs font-bold uppercase text-slate-400 mb-1">Father's Name</h4>
+                                    <h4 className="text-xs font-bold uppercase text-slate-400 mb-1">Father&apos;s Name</h4>
                                     <p className="font-semibold text-slate-800">{selectedApp.father_name}</p>
                                 </div>
                                 <div>

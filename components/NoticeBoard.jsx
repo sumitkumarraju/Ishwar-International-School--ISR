@@ -5,6 +5,17 @@ import { supabase } from '@/lib/supabaseClient';
 export default function NoticeBoard() {
     const [notices, setNotices] = useState([]);
 
+    const categorizeNotice = (title) => {
+        const lower = title.toLowerCase();
+        if (lower.includes('admission') || lower.includes('enroll')) return 'Admissions';
+        if (lower.includes('holiday') || lower.includes('vacation')) return 'Holiday';
+        if (lower.includes('event') || lower.includes('celebration') || lower.includes('day')) return 'Events';
+        if (lower.includes('exam') || lower.includes('result') || lower.includes('academic')) return 'Academic';
+        if (lower.includes('sport') || lower.includes('competition')) return 'Sports';
+        if (lower.includes('fee') || lower.includes('payment')) return 'Fees';
+        return 'General';
+    };
+
     useEffect(() => {
         const fetchNotices = async () => {
             try {
@@ -37,17 +48,6 @@ export default function NoticeBoard() {
         };
         fetchNotices();
     }, []);
-
-    const categorizeNotice = (title) => {
-        const lower = title.toLowerCase();
-        if (lower.includes('admission') || lower.includes('enroll')) return 'Admissions';
-        if (lower.includes('holiday') || lower.includes('vacation')) return 'Holiday';
-        if (lower.includes('event') || lower.includes('celebration') || lower.includes('day')) return 'Events';
-        if (lower.includes('exam') || lower.includes('result') || lower.includes('academic')) return 'Academic';
-        if (lower.includes('sport') || lower.includes('competition')) return 'Sports';
-        if (lower.includes('fee') || lower.includes('payment')) return 'Fees';
-        return 'General';
-    };
 
     const categoryColors = {
         Admissions: 'bg-teal-100 text-teal-700',
