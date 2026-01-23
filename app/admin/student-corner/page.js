@@ -11,13 +11,14 @@ export default function StudentCornerPage() {
     const [newItem, setNewItem] = useState({ title: '', type: 'syllabus', link: '' });
     const [submitting, setSubmitting] = useState(false);
 
-    useEffect(() => { fetchItems(); }, []);
-
-    const fetchItems = async () => {
-        const { data, error } = await supabase.from('student_corner').select('*').order('created_at', { ascending: false });
-        if (!error) setItems(data || []);
-        setLoading(false);
-    };
+    useEffect(() => {
+        const fetchItems = async () => {
+            const { data, error } = await supabase.from('student_corner').select('*').order('created_at', { ascending: false });
+            if (!error) setItems(data || []);
+            setLoading(false);
+        };
+        fetchItems();
+    }, []);
 
     const handleSubmit = async (e) => {
         e.preventDefault();

@@ -1,6 +1,7 @@
 'use client';
 import { useState, useEffect } from 'react';
 import { Search, Linkedin, Briefcase } from 'lucide-react';
+import Image from 'next/image';
 
 export default function AlumniDirectory() {
     const [alumni, setAlumni] = useState([]);
@@ -52,9 +53,15 @@ export default function AlumniDirectory() {
                         <div key={alum.id} className="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition border border-slate-100 flex flex-col items-center text-center group">
 
                             {/* Avatar (Placeholder if no image) */}
-                            <div className="w-24 h-24 rounded-full bg-slate-100 mb-4 overflow-hidden border-2 border-slate-50 group-hover:border-iis-gold transition">
+                            <div className="w-24 h-24 rounded-full bg-slate-100 mb-4 overflow-hidden border-2 border-slate-50 group-hover:border-iis-gold transition relative">
                                 {alum.image ? (
-                                    <img src={alum.image} alt={alum.name} className="w-full h-full object-cover" />
+                                    <Image
+                                        src={alum.image}
+                                        alt={alum.name}
+                                        fill
+                                        sizes="96px"
+                                        className="object-cover"
+                                    />
                                 ) : (
                                     <div className="w-full h-full flex items-center justify-center text-slate-400 font-bold text-2xl">
                                         {alum.name.charAt(0)}

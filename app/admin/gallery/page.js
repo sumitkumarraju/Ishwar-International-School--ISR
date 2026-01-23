@@ -2,6 +2,7 @@
 import { useState, useEffect, useRef } from 'react';
 import { supabase } from '@/lib/supabaseClient';
 import { Upload, Trash2, Image as ImageIcon } from 'lucide-react';
+import Image from 'next/image';
 
 export const dynamic = 'force-dynamic';
 
@@ -137,7 +138,13 @@ export default function GalleryManager() {
                     {/* Images */}
                     {images.map((img) => (
                         <div key={img.id} className="relative group rounded-lg overflow-hidden h-56 shadow-sm border border-gray-100 hover:shadow-md transition-shadow">
-                            <img src={img.image_url} className="w-full h-full object-cover transform group-hover:scale-105 transition-transform duration-500" alt="Gallery" />
+                            <Image
+                                src={img.image_url}
+                                className="object-cover transform group-hover:scale-105 transition-transform duration-500"
+                                alt="Gallery"
+                                fill
+                                sizes="(max-width: 768px) 50vw, (max-width: 1200px) 33vw, 25vw"
+                            />
 
                             {/* Overlay Action */}
                             <div className="absolute inset-0 bg-iis-navy/80 opacity-0 group-hover:opacity-100 transition-opacity flex flex-col items-center justify-center gap-2 backdrop-blur-sm">

@@ -1,6 +1,7 @@
 'use client';
 import React, { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabaseClient';
+import Image from 'next/image';
 
 // Class XII Data (Existing)
 const class12TopPerformers = [
@@ -255,8 +256,14 @@ export default function AcademicAchievers() {
                                     <div className="absolute top-0 right-0 bg-yellow-400 text-iis-navy font-bold text-xs px-3 py-1 rounded-bl-lg z-10">
                                         Rank #{idx + 1}
                                     </div>
-                                    <div className="w-40 h-40 mx-auto rounded-full border-4 border-yellow-100 overflow-hidden mb-4 shadow-inner group-hover:scale-105 transition-transform duration-500">
-                                        <img src={student.img || student.image_url} alt={student.name} className="w-full h-full object-cover" />
+                                    <div className="w-40 h-40 mx-auto rounded-full border-4 border-yellow-100 overflow-hidden mb-4 shadow-inner group-hover:scale-105 transition-transform duration-500 relative">
+                                        <Image
+                                            src={student.img || student.image_url}
+                                            alt={student.name}
+                                            fill
+                                            className="object-cover"
+                                            sizes="(max-width: 768px) 100vw, 33vw"
+                                        />
                                     </div>
                                     <h4 className="font-serif text-2xl font-bold text-slate-800 mb-1">{student.name}</h4>
                                     <div className="text-4xl font-black text-iis-maroon">{student.percentage || student.score}%</div>
@@ -277,7 +284,18 @@ export default function AcademicAchievers() {
                                 {otherAchievers.map((student, idx) => (
                                     <div key={idx} className="bg-white rounded-lg shadow-sm border border-gray-100 overflow-hidden hover:shadow-md transition-shadow">
                                         <div className="aspect-square bg-gray-100 overflow-hidden relative">
-                                            <img src={student.img || student.image_url} alt={student.name} className="w-full h-full object-cover" />
+                                            {student.img || student.image_url ? (
+                                                <Image
+                                                    src={student.img || student.image_url}
+                                                    alt={student.name}
+                                                    fill
+                                                    className="object-cover"
+                                                    sizes="(max-width: 768px) 100vw, 33vw"
+                                                />
+                                            ) : (
+                                                // Fallback for filler items or missing images
+                                                <div className="w-full h-full bg-slate-200"></div>
+                                            )}
                                             <div className="absolute inset-x-0 bottom-0 bg-gradient-to-t from-black/80 to-transparent p-2 text-center text-white">
                                                 <span className="font-bold text-lg">{student.percentage || student.score}%</span>
                                             </div>

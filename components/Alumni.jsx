@@ -7,11 +7,6 @@ import { Quote, Briefcase, GraduationCap, UserPlus } from 'lucide-react';
 const AlumniCard = ({ alum }) => {
     const [hasError, setHasError] = useState(false);
 
-    // Reset error state if alum changes
-    useEffect(() => {
-        setHasError(false);
-    }, [alum]);
-
     const getInitials = (name) => {
         return name
             ?.split(' ')
@@ -135,7 +130,7 @@ export default function Alumni() {
                 {/* Alumni Grid */}
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-20">
                     {alumniList.slice(0, 4).map((alum, index) => (
-                        <AlumniCard key={index} alum={alum} />
+                        <AlumniCard key={alum.id || index} alum={alum} />
                     ))}
                 </div>
 

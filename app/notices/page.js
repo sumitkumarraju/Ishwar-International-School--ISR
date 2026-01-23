@@ -6,32 +6,6 @@ export default function NoticesPage() {
     const [notices, setNotices] = useState([]);
     const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        fetchNotices();
-    }, []);
-
-    const fetchNotices = async () => {
-        const { data } = await supabase
-            .from('notices')
-            .select('*')
-            .eq('active', true)
-            .order('created_at', { ascending: false });
-
-        if (data) {
-            const enhancedNotices = data.map(notice => {
-                const daysOld = Math.floor((Date.now() - new Date(notice.created_at).getTime()) / (1000 * 60 * 60 * 24));
-                return {
-                    ...notice,
-                    isNew: daysOld <= 3,
-                    category: categorizeNotice(notice.title),
-                    hasAttachment: false // Can be extended later
-                };
-            });
-            setNotices(enhancedNotices);
-        }
-        setLoading(false);
-    };
-
     const categorizeNotice = (title) => {
         const lower = title.toLowerCase();
         if (lower.includes('admission') || lower.includes('enroll')) return 'Admissions';
@@ -42,6 +16,31 @@ export default function NoticesPage() {
         if (lower.includes('fee') || lower.includes('payment')) return 'Fees';
         return 'General';
     };
+
+    useEffect(() => {
+        const fetchNotices = async () => {
+            const { data } = await supabase
+                .from('notices')
+                .select('*')
+                .eq('active', true)
+                .order('created_at', { ascending: false });
+
+            if (data) {
+                const enhancedNotices = data.map(notice => {
+                    const daysOld = Math.floor((Date.now() - new Date(notice.created_at).getTime()) / (1000 * 60 * 60 * 24));
+                    return {
+                        ...notice,
+                        isNew: daysOld <= 3,
+                        category: categorizeNotice(notice.title),
+                        hasAttachment: false // Can be extended later
+                    };
+                });
+                setNotices(enhancedNotices);
+            }
+            setLoading(false);
+        };
+        fetchNotices();
+    }, []);
 
     const categoryColors = {
         Admissions: 'bg-teal-100 text-teal-700',

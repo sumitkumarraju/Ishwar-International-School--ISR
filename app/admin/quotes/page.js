@@ -109,7 +109,7 @@ export default function QuotesPage() {
                                     <Quote size={20} />
                                 </div>
                                 <div className="flex-1">
-                                    <p className="text-lg text-slate-800 font-serif italic mb-2">"{quote.text}"</p>
+                                    <p className="text-lg text-slate-800 font-serif italic mb-2">&quot;{quote.text}&quot;</p>
                                     <p className="text-xs font-bold text-slate-500 uppercase tracking-wider">— {quote.author || 'Unknown'}</p>
                                 </div>
                                 <div className="flex items-center gap-4">

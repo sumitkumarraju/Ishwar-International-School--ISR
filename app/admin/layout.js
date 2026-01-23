@@ -24,17 +24,9 @@ import {
 export default function AdminLayout({ children }) {
     const router = useRouter();
     const pathname = usePathname();
-    const [loading, setLoading] = useState(true);
+    // Initialize loading to false to avoid hydration mismatch/flicker loop, assuming middleware handles protection
+    const [loading, setLoading] = useState(false);
     const [sidebarOpen, setSidebarOpen] = useState(false);
-
-    useEffect(() => {
-        // Middleware handles auth protection, just show content
-        if (pathname === '/admin/login') {
-            setLoading(false);
-            return;
-        }
-        setLoading(false);
-    }, [pathname, router]);
 
     // Auto-logout when tab/browser is closed
     useEffect(() => {

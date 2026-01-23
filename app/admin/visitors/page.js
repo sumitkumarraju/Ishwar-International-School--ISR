@@ -1,19 +1,18 @@
 'use client';
 import { useState, useEffect } from 'react';
-import { supabase } from '@/lib/supabaseClient';
-import { FaHistory } from 'react-icons/fa';
 
 export default function VisitorsPage() {
     const [visitors, setVisitors] = useState([]);
-    const [loading, setLoading] = useState(true);
 
     useEffect(() => {
-        // Mock data since real visitor tracking requires middleware/server logic
-        setVisitors([
-            { id: 1, ip: '192.168.1.1', page: '/', time: new Date().toLocaleString() },
-            { id: 2, ip: '10.0.0.5', page: '/admissions', time: new Date(Date.now() - 3600000).toLocaleString() },
-        ]);
-        setLoading(false);
+        // Simulating data fetch
+        const timer = setTimeout(() => {
+            setVisitors([
+                { id: 1, ip: '192.168.1.1', page: '/', time: new Date().toLocaleString() },
+                { id: 2, ip: '10.0.0.5', page: '/admissions', time: new Date(Date.now() - 3600000).toLocaleString() },
+            ]);
+        }, 0);
+        return () => clearTimeout(timer);
     }, []);
 
     return (

@@ -3,57 +3,55 @@ import React, { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabaseClient';
 import FacultyCard from '@/components/FacultyCard';
 
+// Fallback hardcoded faculty data (Moved outside component)
+const hardcodedFaculty = [
+    { name: "Ms. Suman", role: "TGT Maths", image: "/teacher/SUMAN.jpg" },
+    { name: "Ms. Manjot", role: "PRT Hindi", image: "/teacher/MANJOT.jpg" },
+    { name: "Ms. Meena", role: "PGT Hindi", image: "/teacher/MEENA.jpg" },
+    { name: "Ms. Priti", role: "Mother Teacher", image: "/teacher/PRITI.jpg" },
+    { name: "Mr. Ravinder Sharma", role: "TGT Sanskrit", image: "/teacher/RAVINDER.jpg" },
+    { name: "Mr. Shyam", role: "Music Teacher", image: "/teacher/SHYAM.jpg" },
+    { name: "Ms. Kamlesh", role: "PRT Hindi", image: "/teacher/KAMLESH.jpg" },
+    { name: "Ms. Bhawna", role: "PGT IP", image: "/teacher/BHWANA.jpeg" },
+    { name: "Ms. Bharati Grover", role: "PGT Commerce", image: "/teacher/BHARATI.jpeg" },
+    { name: "Ms. Mamta", role: "Teacher", image: "/teacher/MAMTA.jpeg" },
+    { name: "Ms. Jyoti", role: "Teacher", image: "/teacher/JYOTI.jpeg" },
+    { name: "Ms. Nidhi", role: "Teacher", image: "/teacher/NIGHI.jpeg" },
+    { name: "Ms. Priyanka", role: "Teacher", image: "/teacher/PRIYUANKA.jpeg" },
+    { name: "Ms. Manju", role: "Teacher", image: "/teacher/MANJU.jpeg" },
+    { name: "Ms. Deepika", role: "Teacher", image: "/teacher/DEEIPKA.jpeg" },
+    { name: "Ms. Nisita", role: "Teacher", image: "/teacher/NISITA.jpeg" },
+    { name: "Mr. Lalit", role: "Teacher", image: "/teacher/LALIT.jpg" },
+    { name: "Mr. Rohit", role: "Teacher", image: "/teacher/ROHIT.jpeg" },
+];
+
 export default function AcademicsPage() {
     const [activeSection, setActiveSection] = useState('curriculum');
     const [facultyMembers, setFacultyMembers] = useState([]);
 
     useEffect(() => {
+        const fetchFaculty = async () => {
+            const { data } = await supabase
+                .from('staff')
+                .select('*')
+                .eq('active', true)
+                .order('display_order', { ascending: true });
+
+            if (data && data.length > 0) {
+                // Map database fields to component props
+                const mappedFaculty = data.map(teacher => ({
+                    name: teacher.name,
+                    role: teacher.designation,
+                    image: teacher.image_url
+                }));
+                setFacultyMembers(mappedFaculty);
+            } else {
+                // Fallback to hardcoded data if database is empty
+                setFacultyMembers(hardcodedFaculty);
+            }
+        };
         fetchFaculty();
     }, []);
-
-    const fetchFaculty = async () => {
-        const { data } = await supabase
-            .from('staff')
-            .select('*')
-            .eq('active', true)
-            .order('display_order', { ascending: true });
-
-        if (data && data.length > 0) {
-            // Map database fields to component props
-            const mappedFaculty = data.map(teacher => ({
-                name: teacher.name,
-                role: teacher.designation,
-                image: teacher.image_url
-            }));
-            setFacultyMembers(mappedFaculty);
-        } else {
-            // Fallback to hardcoded data if database is empty
-            setFacultyMembers(hardcodedFaculty);
-        }
-    };
-
-
-    // Fallback hardcoded faculty data
-    const hardcodedFaculty = [
-        { name: "Ms. Suman", role: "TGT Maths", image: "/teacher/SUMAN.jpg" },
-        { name: "Ms. Manjot", role: "PRT Hindi", image: "/teacher/MANJOT.jpg" },
-        { name: "Ms. Meena", role: "PGT Hindi", image: "/teacher/MEENA.jpg" },
-        { name: "Ms. Priti", role: "Mother Teacher", image: "/teacher/PRITI.jpg" },
-        { name: "Mr. Ravinder Sharma", role: "TGT Sanskrit", image: "/teacher/RAVINDER.jpg" },
-        { name: "Mr. Shyam", role: "Music Teacher", image: "/teacher/SHYAM.jpg" },
-        { name: "Ms. Kamlesh", role: "PRT Hindi", image: "/teacher/KAMLESH.jpg" },
-        { name: "Ms. Bhawna", role: "PGT IP", image: "/teacher/BHWANA.jpeg" },
-        { name: "Ms. Bharati Grover", role: "PGT Commerce", image: "/teacher/BHARATI.jpeg" },
-        { name: "Ms. Mamta", role: "Teacher", image: "/teacher/MAMTA.jpeg" },
-        { name: "Ms. Jyoti", role: "Teacher", image: "/teacher/JYOTI.jpeg" },
-        { name: "Ms. Nidhi", role: "Teacher", image: "/teacher/NIGHI.jpeg" },
-        { name: "Ms. Priyanka", role: "Teacher", image: "/teacher/PRIYUANKA.jpeg" },
-        { name: "Ms. Manju", role: "Teacher", image: "/teacher/MANJU.jpeg" },
-        { name: "Ms. Deepika", role: "Teacher", image: "/teacher/DEEIPKA.jpeg" },
-        { name: "Ms. Nisita", role: "Teacher", image: "/teacher/NISITA.jpeg" },
-        { name: "Mr. Lalit", role: "Teacher", image: "/teacher/LALIT.jpg" },
-        { name: "Mr. Rohit", role: "Teacher", image: "/teacher/ROHIT.jpeg" },
-    ];
 
     return (
         <div className="bg-slate-50 min-h-screen pb-20">

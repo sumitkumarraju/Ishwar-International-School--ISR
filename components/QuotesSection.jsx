@@ -45,7 +45,7 @@ export default function QuotesSection() {
                                 <FaQuoteLeft />
                             </div>
                             <p className="text-slate-700 text-lg leading-relaxed mb-6 italic relative z-10 font-serif">
-                                "{quote.text}"
+                                &quot;{quote.text}&quot;
                             </p>
                             <div className="flex items-center gap-4 pt-4 border-t border-gray-200">
                                 <div className="h-10 w-1 bg-iis-gold rounded-full"></div>

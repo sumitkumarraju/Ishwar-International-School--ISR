@@ -2,6 +2,7 @@
 import { useState, useEffect } from 'react';
 import { CheckCircle, XCircle, Trash2, Mail, Briefcase, Calendar, Linkedin, Plus, Upload, X } from 'lucide-react';
 import { supabase } from '@/lib/supabaseClient'; // Ensure you have this client-side supabase client
+import Image from 'next/image';
 
 export default function AdminAlumni() {
     const [alumni, setAlumni] = useState([]);
@@ -239,7 +240,17 @@ export default function AdminAlumni() {
                             <tr key={alum.id} className="border-b border-slate-100 hover:bg-slate-50">
                                 <td className="p-4">
                                     <div className="flex items-center gap-3">
-                                        {alum.image && <img src={alum.image} alt="" className="w-10 h-10 rounded-full object-cover bg-slate-100" />}
+                                        {alum.image && (
+                                            <div className="relative w-10 h-10 rounded-full overflow-hidden bg-slate-100">
+                                                <Image
+                                                    src={alum.image}
+                                                    alt=""
+                                                    fill
+                                                    className="object-cover"
+                                                    sizes="40px"
+                                                />
+                                            </div>
+                                        )}
                                         <div>
                                             <div className="font-medium text-slate-800">{alum.name}</div>
                                             <div className="text-xs text-slate-500">{alum.email}</div>
@@ -332,11 +343,15 @@ export default function AdminAlumni() {
                                     />
                                     {imagePreview ? (
                                         <div className="space-y-2">
-                                            <img
-                                                src={imagePreview}
-                                                alt="Preview"
-                                                className="w-32 h-32 object-cover rounded-lg mx-auto border-2 border-green-500"
-                                            />
+                                            <div className="relative w-32 h-32 mx-auto">
+                                                <Image
+                                                    src={imagePreview}
+                                                    alt="Preview"
+                                                    fill
+                                                    className="object-cover rounded-lg border-2 border-green-500"
+                                                    sizes="128px"
+                                                />
+                                            </div>
                                             <div className="flex items-center justify-center gap-2 text-green-600">
                                                 <CheckCircle size={16} />
                                                 <span className="text-sm font-medium">{formData.image.name}</span>

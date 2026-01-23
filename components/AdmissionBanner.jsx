@@ -1,14 +1,14 @@
 'use client';
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import Link from 'next/link';
 
 export default function AdmissionBanner() {
-    const [status, setStatus] = useState(null);
-
-    useEffect(() => {
-        // Static status for now, or fetch from Supabase 'site_settings' if created later
-        setStatus({ isOpen: true, sessionYear: '2025-26', noticeText: 'Limited seats available.' });
-    }, []);
+    // Static status for now, or fetch from Supabase 'site_settings' if created later
+    const [status] = useState({
+        isOpen: true,
+        sessionYear: '2025-26',
+        noticeText: 'Limited seats available.'
+    });
 
     if (!status || !status.isOpen) return null;
 

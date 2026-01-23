@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { supabase } from '@/lib/supabaseClient';
 import { Plus, UserCog, Trash2, Edit } from 'lucide-react';
 import Modal from '@/components/ui/Modal';
+import Image from 'next/image';
 
 export default function StaffPage() {
     const [staff, setStaff] = useState([]);
@@ -158,9 +159,15 @@ export default function StaffPage() {
                         {staff.map((teacher) => (
                             <tr key={teacher.id} className="hover:bg-slate-50 transition-colors">
                                 <td className="px-6 py-3">
-                                    <div className="w-10 h-10 rounded-full overflow-hidden bg-gray-200 flex items-center justify-center flex-shrink-0">
+                                    <div className="w-10 h-10 rounded-full overflow-hidden bg-gray-200 flex items-center justify-center flex-shrink-0 relative">
                                         {teacher.image_url ? (
-                                            <img src={teacher.image_url} alt={teacher.name} className="w-full h-full object-cover" />
+                                            <Image
+                                                src={teacher.image_url}
+                                                alt={teacher.name}
+                                                fill
+                                                className="object-cover"
+                                                sizes="40px"
+                                            />
                                         ) : (
                                             <UserCog className="text-gray-400" size={20} />
                                         )}

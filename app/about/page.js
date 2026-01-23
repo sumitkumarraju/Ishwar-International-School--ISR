@@ -10,24 +10,23 @@ export default function AboutPage() {
     const [director, setDirector] = useState(null);
 
     useEffect(() => {
+        const fetchStaff = async () => {
+            const { data } = await supabase
+                .from('staff')
+                .select('*')
+                .eq('active', true)
+                .order('display_order', { ascending: true });
+
+            if (data) {
+                setStaff(data);
+                const principalData = data.find(s => s.designation?.toLowerCase().includes('principal') && !s.designation?.toLowerCase().includes('vice'));
+                const directorData = data.find(s => s.designation?.toLowerCase().includes('director'));
+                setPrincipal(principalData);
+                setDirector(directorData);
+            }
+        };
         fetchStaff();
     }, []);
-
-    const fetchStaff = async () => {
-        const { data } = await supabase
-            .from('staff')
-            .select('*')
-            .eq('active', true)
-            .order('display_order', { ascending: true });
-
-        if (data) {
-            setStaff(data);
-            const principalData = data.find(s => s.designation?.toLowerCase().includes('principal') && !s.designation?.toLowerCase().includes('vice'));
-            const directorData = data.find(s => s.designation?.toLowerCase().includes('director'));
-            setPrincipal(principalData);
-            setDirector(directorData);
-        }
-    };
 
     // Use database data if available, otherwise fall back to hardcoded
     const principalData = principal || { name: 'Mrs. Usha Kaushik', designation: 'Principal', image_url: '/teacher/principla.jpg' };
